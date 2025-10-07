@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Gates Tracker</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .header { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .nav { margin: 20px 0; }
+        .nav a { margin-right: 15px; text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to Gates Foundation Tracker</h1>
+        <p>Logged in as: <strong>{{ user.username }}</strong> ({{ user.role }})</p>
+    </div>
+
+    <div class="nav">
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'admin:index' %}">Admin Panel</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <div class="content">
+        <h2>Quick Stats</h2>
+        <p>Your personalized dashboard will appear here soon!</p>
+        <p>You can now:</p>
+        <ul>
+            <li>Manage Projects</li>
+            <li>Track Farmers</li>
+            <li>View Reports</li>
+            <li>Monitor Finances</li>
+        </ul>
+    </div>
+</body>
+</html>

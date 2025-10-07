@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #28a745; color: white; padding: 20px; text-align: center; }
+        .content { background: #f8f9fa; padding: 20px; }
+        .footer { text-align: center; padding: 20px; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Expense Approval Required</h2>
+        </div>
+        <div class="content">
+            <p>Hello {{ approver.get_full_name|default:approver.username }},</p>
+            <p>An expense requires your approval:</p>
+            
+            <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                <h3>Expense Details</h3>
+                <p><strong>Project:</strong> {{ project.name }}</p>
+                <p><strong>Amount:</strong> ${{ amount }}</p>
+                <p><strong>Description:</strong> {{ expense.description }}</p>
+                <p><strong>Date:</strong> {{ expense.expense_date }}</p>
+            </div>
+            
+            <p>Please log in to the Gates Tracker system to review and approve this expense.</p>
+        </div>
+        <div class="footer">
+            <p>Gates Foundation Tracker System</p>
+        </div>
+    </div>
+</body>
+</html>

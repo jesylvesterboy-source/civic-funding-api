@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn gates_tracker.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    environment:
+      - DEBUG=False
+      - DATABASE_URL=postgresql://gates_user:${POSTGRES_PASSWORD}@db:5432/gates_tracker_prod
+    depends_on:
+      - db
+      - redis
+    networks:
+      - gates_network
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=gates_tracker_prod
+      - POSTGRES_USER=gates_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - gates_network
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - gates_network
+
+  celery:
+    build: .
+    command: celery -A gates_tracker worker --loglevel=info
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    environment:
+      - DEBUG=False
+      - DATABASE_URL=postgresql://gates_user:${POSTGRES_PASSWORD}@db:5432/gates_tracker_prod
+    depends_on:
+      - db
+      - redis
+    networks:
+      - gates_network
+
+  celery-beat:
+    build: .
+    command: celery -A gates_tracker beat --loglevel=info
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    environment:
+      - DEBUG=False
+      - DATABASE_URL=postgresql://gates_user:${POSTGRES_PASSWORD}@db:5432/gates_tracker_prod
+    depends_on:
+      - db
+      - redis
+    networks:
+      - gates_network
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+
+networks:
+  gates_network:
+    driver: bridge

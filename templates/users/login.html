@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Gates Tracker</title>
+    <style>
+        body { font-family: Arial; max-width: 400px; margin: 100px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        .messages { margin-bottom: 20px; }
+        .error { color: red; background: #ffe6e6; padding: 10px; border-radius: 4px; }
+        .success { color: green; background: #e6ffe6; padding: 10px; border-radius: 4px; }
+        .form-errors { color: red; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h2>Gates Foundation Tracker - Login</h2>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if form.errors %}
+    <div class="form-errors">
+        Please correct the errors below.
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+
+    <p style="margin-top: 20px; text-align: center;">
+        <a href="{% url 'admin:index' %}">Admin Login</a>
+    </p>
+</body>
+</html>

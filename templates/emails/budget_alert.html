@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .alert { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; }
+        .critical { background: #f8d7da; border-color: #f5c6cb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Budget Utilization Alert</h2>
+        </div>
+        <div class="content">
+            <p>Hello,</p>
+            
+            <div class="alert {% if utilization >= 90 %}critical{% endif %}">
+                <h3>Budget: {{ budget.get_budget_type_display }}</h3>
+                <p><strong>Project:</strong> {{ project.name }}</p>
+                <p><strong>Utilization:</strong> {{ utilization|floatformat:1 }}%</p>
+                <p><strong>Threshold:</strong> {{ threshold }}%</p>
+                <p><strong>Allocated:</strong> ${{ budget.allocated_amount }}</p>
+                <p><strong>Spent:</strong> ${{ budget.total_expenses }}</p>
+                <p><strong>Remaining:</strong> ${{ budget.remaining_amount }}</p>
+            </div>
+            
+            <p>Please review the budget allocation for this project.</p>
+        </div>
+    </div>
+</body>
+</html>

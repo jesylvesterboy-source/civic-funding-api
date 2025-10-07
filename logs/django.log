@@ -1,0 +1,93 @@
+INFO 2025-10-06 14:10:02,714 autoreload Watching for file changes with StatReloader
+INFO 2025-10-06 14:13:42,384 autoreload C:\Users\Hp\Desktop\gates_tracker\gates_tracker\urls.py changed, reloading.
+INFO 2025-10-06 14:13:47,079 autoreload Watching for file changes with StatReloader
+INFO 2025-10-06 14:22:11,577 autoreload Watching for file changes with StatReloader
+INFO 2025-10-06 14:23:13,628 basehttp "GET / HTTP/1.1" 302 0
+INFO 2025-10-06 14:23:22,973 basehttp "GET /users/dashboard/ HTTP/1.1" 200 1086
+INFO 2025-10-06 14:23:40,422 basehttp "GET /users/dashboard/ HTTP/1.1" 200 1086
+INFO 2025-10-06 14:23:51,389 basehttp - Broken pipe from ('127.0.0.1', 52453)
+INFO 2025-10-06 14:23:52,339 basehttp - Broken pipe from ('127.0.0.1', 52457)
+INFO 2025-10-06 14:23:52,742 basehttp "GET /users/logout/ HTTP/1.1" 302 0
+INFO 2025-10-06 14:23:52,904 basehttp "GET /users/login/ HTTP/1.1" 200 1360
+INFO 2025-10-06 14:24:06,593 basehttp "POST /users/login/ HTTP/1.1" 200 1349
+INFO 2025-10-06 14:24:27,880 basehttp "POST /users/login/ HTTP/1.1" 302 0
+INFO 2025-10-06 14:24:28,320 basehttp "GET /users/dashboard/ HTTP/1.1" 200 1086
+INFO 2025-10-06 14:24:38,024 basehttp "GET /users/logout/ HTTP/1.1" 302 0
+INFO 2025-10-06 14:24:38,088 basehttp "GET /users/login/ HTTP/1.1" 200 1425
+INFO 2025-10-06 14:25:11,991 basehttp "GET /users/login/ HTTP/1.1" 200 1225
+INFO 2025-10-06 14:25:51,907 basehttp "GET /users/dashboard/ HTTP/1.1" 302 0
+WARNING 2025-10-06 14:26:11,807 log Not Found: /accounts/login/
+WARNING 2025-10-06 14:26:11,812 basehttp "GET /accounts/login/?next=/users/dashboard/ HTTP/1.1" 404 2694
+INFO 2025-10-06 14:27:31,166 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-06 14:27:51,629 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4176
+INFO 2025-10-06 14:27:52,630 basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2025-10-06 14:31:22,392 autoreload C:\Users\Hp\Desktop\gates_tracker\users\views.py changed, reloading.
+INFO 2025-10-06 14:31:33,096 autoreload Watching for file changes with StatReloader
+INFO 2025-10-06 14:34:18,505 autoreload C:\Users\Hp\Desktop\gates_tracker\gates_tracker\settings.py changed, reloading.
+INFO 2025-10-06 14:34:21,910 autoreload Watching for file changes with StatReloader
+INFO 2025-10-06 14:34:50,980 autoreload Watching for file changes with StatReloader
+INFO 2025-10-06 14:35:20,290 basehttp "GET / HTTP/1.1" 302 0
+INFO 2025-10-06 14:35:20,636 basehttp "GET /users/dashboard/ HTTP/1.1" 302 0
+INFO 2025-10-06 14:35:20,836 basehttp "GET /users/login/?next=/users/dashboard/ HTTP/1.1" 200 1606
+INFO 2025-10-06 14:35:47,864 basehttp "GET /users/dashboard/ HTTP/1.1" 302 0
+INFO 2025-10-06 14:35:47,963 basehttp "GET /users/login/?next=/users/dashboard/ HTTP/1.1" 200 1606
+INFO 2025-10-06 14:35:56,073 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-06 14:35:57,007 basehttp "GET /admin/ HTTP/1.1" 200 13709
+INFO 2025-10-06 14:35:57,979 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-10-06 14:35:58,065 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+ERROR 2025-10-06 14:42:54,219 log Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\Hp\Desktop\gates_tracker_venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Hp\Desktop\gates_tracker_venv\lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "C:\Users\Hp\Desktop\gates_tracker_venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\Hp\Desktop\gates_tracker_venv\lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+INFO 2025-10-07 09:36:16,640 autoreload Watching for file changes with StatReloader
+INFO 2025-10-07 09:36:40,376 basehttp "GET /users/login/?next=/users/dashboard/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:36:41,460 basehttp "GET /users/dashboard/ HTTP/1.1" 200 1086
+INFO 2025-10-07 09:36:47,576 basehttp "GET /admin/ HTTP/1.1" 200 16061
+INFO 2025-10-07 09:37:00,034 basehttp "GET /users/login/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:37:00,582 basehttp "GET /users/dashboard/ HTTP/1.1" 200 1086
+INFO 2025-10-07 09:37:18,906 basehttp "GET /users/logout/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:37:19,292 basehttp "GET /users/login/ HTTP/1.1" 200 1660
+INFO 2025-10-07 09:37:52,578 basehttp "GET /users/logout/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:37:52,715 basehttp "GET /users/login/ HTTP/1.1" 200 1660
+INFO 2025-10-07 09:38:15,704 basehttp "POST /users/login/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:38:16,320 basehttp "GET /users/dashboard/ HTTP/1.1" 200 1086
+INFO 2025-10-07 09:38:39,092 basehttp "GET /users/logout/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:38:39,121 basehttp "GET /users/login/ HTTP/1.1" 200 1725
+INFO 2025-10-07 09:38:53,167 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:38:53,674 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4176
+INFO 2025-10-07 09:38:54,894 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-10-07 09:38:54,895 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-10-07 09:38:54,897 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-10-07 09:38:54,900 basehttp "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-10-07 09:38:54,902 basehttp "GET /static/admin/css/login.css HTTP/1.1" 304 0
+INFO 2025-10-07 09:38:54,908 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:38:55,295 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:03,129 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-07 09:39:03,373 basehttp "GET /admin/ HTTP/1.1" 200 16061
+INFO 2025-10-07 09:39:03,476 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:03,554 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:03,565 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:25,898 basehttp "GET /admin/finances/financialreport/ HTTP/1.1" 200 16349
+INFO 2025-10-07 09:39:25,922 basehttp - Broken pipe from ('127.0.0.1', 57699)
+INFO 2025-10-07 09:39:26,029 basehttp "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,109 basehttp "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,132 basehttp "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,195 basehttp "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,133 basehttp "GET /static/admin/js/core.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,171 basehttp "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,133 basehttp "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,249 basehttp "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,255 basehttp "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,304 basehttp "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:26,545 basehttp "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:29,605 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-10-07 09:39:29,810 basehttp "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:29,915 basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+INFO 2025-10-07 09:39:43,600 basehttp "GET /admin/ HTTP/1.1" 200 16061
