@@ -1,18 +1,20 @@
-# Create complete requirements.txt
-echo "Django==5.2.7
+Django==5.2.7
+djangorestframework
+django-cors-headers
+django-filter
+django-extensions
+django-debug-toolbar
+dj-database-url
+python-decouple
+python-dotenv
 celery
 redis
-dj-database-url
-django-cors-headers
+django-celery-results
+django-celery-beat
 whitenoise
 psycopg2-binary
-djangorestframework
 drf-yasg
-django-filter
 pandas
 openpyxl
 Pillow
-python-decouple
-django-extensions
-django-debug-toolbar
-gunicorn" > requirements.txt
+gunicorn
