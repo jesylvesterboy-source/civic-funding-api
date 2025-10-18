@@ -4,7 +4,6 @@ django-cors-headers
 django-filter
 django-extensions
 django-debug-toolbar
-dj-database-url
 python-decouple
 python-dotenv
 celery
@@ -12,7 +11,6 @@ redis
 django-celery-results
 django-celery-beat
 whitenoise
-# psycopg2-binary
 drf-yasg
 pandas
 openpyxl
