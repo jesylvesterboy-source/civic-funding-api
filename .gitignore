@@ -213,3 +213,8 @@ __marimo__/
 .env
 .env.backup
 
+
+db.sqlite3
+logs/
+*.log
+
