@@ -1,5 +1,5 @@
 ﻿"""
-Django settings for gates_tracker project â€” PRODUCTION CONFIGURATION
+Django settings for gates_tracker project  PRODUCTION CONFIGURATION
 Author: Jeremiah Williams Sylvester
 """
 
@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --------------------------------------
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key-for-dev')
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
 
 # --------------------------------------
 # CUSTOM USER MODEL
@@ -31,24 +31,20 @@ AUTH_USER_MODEL = 'users.User'
 # APPLICATION DEFINITION
 # --------------------------------------
 INSTALLED_APPS = [
-    # Django core apps
+    'users',
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Third-party apps
     'rest_framework',
     'corsheaders',
     'drf_yasg',
     'django_filters',
     'django_celery_results',
-
-    # Custom/local apps - 'users' MUST come first and ONLY ONCE
-    'users',
-    'core',
+    'django_celery_beat',
     'projects',
     'farmers',
     'finances',
@@ -57,8 +53,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -89,25 +85,27 @@ TEMPLATES = [
 WSGI_APPLICATION = 'gates_tracker.wsgi.application'
 
 # --------------------------------------
-# DATABASE CONFIGURATION
+# DATABASE CONFIGURATION - RENDER COMPATIBLE
 # --------------------------------------
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'fsss_tracking'),
-        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'FSSSint3rn3t#25'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
-        'CONN_MAX_AGE': 600,
-    }
-}
+# Use DATABASE_URL from environment (provided by Render)
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-# Fallback to SQLite for development
-if DEBUG and not os.environ.get('POSTGRES_DB'):
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DATABASE_URL:
+    # Production - Use Render's PostgreSQL database
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    # Development - Use SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 
 # --------------------------------------
@@ -148,7 +146,10 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
-SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False').lower() == 'true'
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
+SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True').lower() == 'true'
 X_FRAME_OPTIONS = 'DENY'
 
 # --------------------------------------
@@ -165,6 +166,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://www.fsss.ng",
     "https://*.fsss.ng",
     "http://localhost:3000",
+    "https://*.onrender.com",
 ]
 
 # --------------------------------------
@@ -225,12 +227,13 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --------------------------------------
-# CELERY CONFIGURATION - USING DATABASE BROKER
+# CELERY CONFIGURATION
 # --------------------------------------
-CELERY_BROKER_URL = 'db+sqlite:///celery.db'
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Lagos'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_TASK_TIME_LIMIT = 300
