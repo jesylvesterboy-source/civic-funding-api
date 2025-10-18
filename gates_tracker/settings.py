@@ -1,5 +1,5 @@
-"""
-Django settings for gates_tracker project — PRODUCTION CONFIGURATION
+﻿"""
+Django settings for gates_tracker project â€” PRODUCTION CONFIGURATION
 Author: Jeremiah Williams Sylvester
 """
 
