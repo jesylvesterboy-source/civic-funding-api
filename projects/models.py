@@ -85,133 +85,67 @@ class Project(TimeStampedModel, CustomExportMixin):
 
     @classmethod
     def export_to_csv(cls):
-        'Export projects to CSV - Smart export that adapts to available fields'
+        'Export projects to CSV - Only real data, no samples'
         import csv
         from django.http import HttpResponse
         
-        try:
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
-            writer = csv.writer(response)
-            
-            # Start with core fields that definitely exist
-            headers = ['Project Name', 'Project Code', 'Description', 'Budget', 'Status', 'Progress', 'Start Date', 'End Date']
-            
-            # Try to add robust fields if they exist
-            try:
-                sample = cls.objects.first()
-                if sample:
-                    if hasattr(sample, 'country') and getattr(sample, 'country', None):
-                        headers.append('Country')
-                    if hasattr(sample, 'donor') and getattr(sample, 'donor', None):
-                        headers.append('Donor')
-                    if hasattr(sample, 'region') and getattr(sample, 'region', None):
-                        headers.append('Region')
-                    if hasattr(sample, 'manager') and getattr(sample, 'manager', None):
-                        headers.append('Manager')
-            except:
-                pass  # If robust fields don't exist, just use core fields
-            
-            writer.writerow(headers)
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
+        writer = csv.writer(response)
+        
+        # Professional headers
+        headers = ['Project Name', 'Project Code', 'Description', 'Budget', 'Status', 'Progress', 'Start Date', 'End Date']
+        writer.writerow(headers)
 
-            # Export projects
-            projects = cls.objects.all()
-            
-            for project in projects:
-                # Core fields (always exist)
-                row = [
-                    project.name,
-                    project.code,
-                    project.description or '',
-                    project.budget or 0,
-                    project.status,
-                    project.progress or 0,
-                    project.start_date.strftime('%Y-%m-%d') if project.start_date else '',
-                    project.end_date.strftime('%Y-%m-%d') if project.end_date else ''
-                ]
-                
-                # Add robust fields if they exist
-                try:
-                    if 'Country' in headers:
-                        row.append(getattr(project, 'country', '') or '')
-                    if 'Donor' in headers:
-                        row.append(getattr(project, 'donor', '') or '')
-                    if 'Region' in headers:
-                        row.append(getattr(project, 'region', '') or '')
-                    if 'Manager' in headers:
-                        manager = getattr(project, 'manager', None)
-                        row.append(str(manager) if manager else '')
-                except:
-                    # If any robust field fails, skip it
-                    pass
-                
-                writer.writerow(row)
+        # Export ONLY real projects - no sample data
+        projects = cls.objects.all()
+        
+        for project in projects:
+            writer.writerow([
+                project.name,
+                project.code,
+                project.description or '',
+                project.budget or 0,
+                project.status,
+                project.progress or 0,
+                project.start_date.strftime('%Y-%m-%d') if project.start_date else '',
+                project.end_date.strftime('%Y-%m-%d') if project.end_date else ''
+            ])
 
-            return response
-            
-        except Exception as e:
-            # Fallback to basic export if anything fails
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
-            writer = csv.writer(response)
-            writer.writerow(['Project Name', 'Project Code', 'Description', 'Budget', 'Status'])
-            writer.writerow(['Export completed with limited data', '', 'Some fields may be unavailable', 0, 'completed'])
-            return response
+        # If no projects, CSV will only have headers - professional and honest
+        return response
 
     @classmethod
     def export_to_excel(cls):
-        'Export projects to Excel - Smart export'
+        'Export projects to Excel - Only real data'
         import pandas as pd
         from django.http import HttpResponse
         from io import BytesIO
+
+        data = []
+        projects = cls.objects.all()
         
-        try:
-            data = []
-            projects = cls.objects.all()
-            
-            for project in projects:
-                project_data = {
-                    'Project Name': project.name,
-                    'Project Code': project.code,
-                    'Description': project.description or '',
-                    'Budget': float(project.budget or 0),
-                    'Status': project.status,
-                    'Progress': project.progress or 0,
-                    'Start Date': project.start_date.strftime('%Y-%m-%d') if project.start_date else '',
-                    'End Date': project.end_date.strftime('%Y-%m-%d') if project.end_date else ''
-                }
-                
-                # Add robust fields safely
-                try:
-                    project_data['Country'] = getattr(project, 'country', '') or ''
-                    project_data['Donor'] = getattr(project, 'donor', '') or ''
-                    project_data['Region'] = getattr(project, 'region', '') or ''
-                    manager = getattr(project, 'manager', None)
-                    project_data['Manager'] = str(manager) if manager else ''
-                except:
-                    pass
-                
-                data.append(project_data)
+        # Export ONLY real projects
+        for project in projects:
+            data.append({
+                'Project Name': project.name,
+                'Project Code': project.code,
+                'Description': project.description or '',
+                'Budget': float(project.budget or 0),
+                'Status': project.status,
+                'Progress': project.progress or 0,
+                'Start Date': project.start_date.strftime('%Y-%m-%d') if project.start_date else '',
+                'End Date': project.end_date.strftime('%Y-%m-%d') if project.end_date else ''
+            })
 
-            df = pd.DataFrame(data)
-            output = BytesIO()
-            with pd.ExcelWriter(output, engine='openpyxl') as writer:
-                df.to_excel(writer, sheet_name='Projects', index=False)
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Projects', index=False)
 
-            response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=\"projects.xlsx\"'
-            return response
-            
-        except Exception as e:
-            # Return basic Excel if export fails
-            output = BytesIO()
-            df = pd.DataFrame([{'Project Name': 'Export Completed', 'Note': 'Data exported with available fields only'}])
-            with pd.ExcelWriter(output, engine='openpyxl') as writer:
-                df.to_excel(writer, sheet_name='Projects', index=False)
-                
-            response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=\"projects.xlsx\"'
-            return response
+        response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=\"projects.xlsx\"'
+        return response
 
     class Meta:
         ordering = ['-created_at']
