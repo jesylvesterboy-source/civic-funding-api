@@ -1,9 +1,9 @@
-﻿from django.db import models
+from django.db import models
 from django.conf import settings
 from core.models import TimeStampedModel
-from core.export_import import ExportImportMixin
+from core.export_import import CustomExportMixin
 
-class Project(TimeStampedModel, ExportImportMixin):
+class Project(TimeStampedModel, CustomExportMixin):
     STATUS_CHOICES = [
         ('planned', 'Planned'),
         ('active', 'Active'),
@@ -93,6 +93,89 @@ class Project(TimeStampedModel, ExportImportMixin):
             remaining = (self.end_date - timezone.now().date()).days
             return max(0, remaining)
         return 0
+
+    @classmethod
+    def export_to_csv(cls):
+        'Export projects to CSV'
+        import csv
+        from django.http import HttpResponse
+        import io
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['Name', 'Code', 'Description', 'Budget', 'Status', 'Progress', 'Start Date', 'End Date'])
+        
+        for project in cls.objects.all():
+            writer.writerow([
+                project.name,
+                project.code,
+                project.description,
+                project.budget,
+                project.status,
+                project.progress,
+                project.start_date,
+                project.end_date
+            ])
+        
+        return response
+
+    @classmethod
+    def export_to_excel(cls):
+        'Export projects to Excel'
+        import pandas as pd
+        from django.http import HttpResponse
+        from io import BytesIO
+        
+        data = []
+        for project in cls.objects.all():
+            data.append({
+                'Name': project.name,
+                'Code': project.code,
+                'Description': project.description,
+                'Budget': project.budget,
+                'Status': project.status,
+                'Progress': project.progress,
+                'Start Date': project.start_date,
+                'End Date': project.end_date
+            })
+        
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Projects', index=False)
+        
+        response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=\"projects.xlsx\"'
+        return response
+
+    @classmethod
+    def import_from_csv(cls, csv_file):
+        'Import projects from CSV'
+        import csv
+        import io
+        from datetime import datetime
+        
+        decoded_file = csv_file.read().decode('utf-8')
+        io_string = io.StringIO(decoded_file)
+        reader = csv.DictReader(io_string)
+        
+        imported_count = 0
+        for row in reader:
+            cls.objects.create(
+                name=row['Name'],
+                code=row['Code'],
+                description=row['Description'],
+                budget=row['Budget'],
+                status=row['Status'],
+                progress=int(row['Progress']),
+                start_date=datetime.strptime(row['Start Date'], '%Y-%m-%d').date(),
+                end_date=datetime.strptime(row['End Date'], '%Y-%m-%d').date()
+            )
+            imported_count += 1
+        
+        return imported_count
 
     class Meta:
         ordering = ['-created_at']

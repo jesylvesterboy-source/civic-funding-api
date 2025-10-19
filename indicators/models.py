@@ -1,10 +1,10 @@
 from django.db import models
-from core.models import TimeStampedModel
+from core.models import TimeStampedModel, AutoExportMixin
 from projects.models import Project
 from farmers.models import Farmer
 
 
-class PerformanceIndicator(TimeStampedModel):
+class PerformanceIndicator(TimeStampedModel, AutoExportMixin):
     """Tracks measurable indicators for project performance and impact."""
 
     CATEGORY_CHOICES = [

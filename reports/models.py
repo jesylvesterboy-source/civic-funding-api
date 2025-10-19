@@ -1,10 +1,10 @@
 from django.db import models
 from django.conf import settings
-from core.models import TimeStampedModel
+from core.models import TimeStampedModel, AutoExportMixin
 from projects.models import Project  # Now this will work!
 
 
-class MonitoringVisit(TimeStampedModel):
+class MonitoringVisit(TimeStampedModel, AutoExportMixin):
     """Tracks monitoring and evaluation visits for accountability."""
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='visits')
@@ -25,7 +25,7 @@ class MonitoringVisit(TimeStampedModel):
         return f"{self.project.name} visit on {self.visit_date}"
 
 
-class Report(TimeStampedModel):
+class Report(TimeStampedModel, AutoExportMixin):
     """Consolidated project report combining performance, finance, and visit summaries."""
 
     REPORT_TYPE_CHOICES = [

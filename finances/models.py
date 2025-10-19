@@ -1,10 +1,10 @@
-﻿from django.db import models
+from django.db import models
 from django.conf import settings
 from core.models import TimeStampedModel
-from core.export_import import ExportImportMixin
+from core.export_import import CustomExportMixin
 from projects.models import Project
 
-class Budget(TimeStampedModel, ExportImportMixin):
+class Budget(TimeStampedModel, CustomExportMixin):
     BUDGET_TYPES = [
         ('operational', 'Operational'),
         ('capital', 'Capital'),
@@ -62,13 +62,68 @@ class Budget(TimeStampedModel, ExportImportMixin):
         today = timezone.now().date()
         return self.start_date <= today <= self.end_date
 
+    @classmethod
+    def export_to_csv(cls):
+        'Export budgets to CSV'
+        import csv
+        from django.http import HttpResponse
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=\"budgets.csv\"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['Project', 'Name', 'Budget Type', 'Category', 'Allocated Amount', 'Start Date', 'End Date', 'Utilization Rate'])
+        
+        for budget in cls.objects.all():
+            writer.writerow([
+                budget.project.code,
+                budget.name,
+                budget.budget_type,
+                budget.category,
+                budget.allocated_amount,
+                budget.start_date,
+                budget.end_date,
+                f'{budget.utilization_rate:.1f}%'
+            ])
+        
+        return response
+
+    @classmethod
+    def export_to_excel(cls):
+        'Export budgets to Excel'
+        import pandas as pd
+        from django.http import HttpResponse
+        from io import BytesIO
+        
+        data = []
+        for budget in cls.objects.all():
+            data.append({
+                'Project': budget.project.code,
+                'Name': budget.name,
+                'Budget Type': budget.budget_type,
+                'Category': budget.category,
+                'Allocated Amount': budget.allocated_amount,
+                'Start Date': budget.start_date,
+                'End Date': budget.end_date,
+                'Utilization Rate': f'{budget.utilization_rate:.1f}%'
+            })
+        
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Budgets', index=False)
+        
+        response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=\"budgets.xlsx\"'
+        return response
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Budget'
         verbose_name_plural = 'Budgets'
         unique_together = ['project', 'name']
 
-class Expense(TimeStampedModel, ExportImportMixin):
+class Expense(TimeStampedModel, CustomExportMixin):
     CATEGORY_CHOICES = [
         ('personnel', 'Personnel'),
         ('equipment', 'Equipment'),
@@ -137,6 +192,63 @@ class Expense(TimeStampedModel, ExportImportMixin):
     def is_paid(self):
         return self.status == 'paid'
 
+    @classmethod
+    def export_to_csv(cls):
+        'Export expenses to CSV'
+        import csv
+        from django.http import HttpResponse
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=\"expenses.csv\"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['Project', 'Budget', 'Description', 'Amount', 'Date', 'Category', 'Payment Method', 'Status', 'Receipt Number'])
+        
+        for expense in cls.objects.all():
+            writer.writerow([
+                expense.project.code,
+                expense.budget.name,
+                expense.description[:100],
+                expense.amount,
+                expense.date,
+                expense.category,
+                expense.payment_method,
+                expense.status,
+                expense.receipt_number or ''
+            ])
+        
+        return response
+
+    @classmethod
+    def export_to_excel(cls):
+        'Export expenses to Excel'
+        import pandas as pd
+        from django.http import HttpResponse
+        from io import BytesIO
+        
+        data = []
+        for expense in cls.objects.all():
+            data.append({
+                'Project': expense.project.code,
+                'Budget': expense.budget.name,
+                'Description': expense.description[:100],
+                'Amount': expense.amount,
+                'Date': expense.date,
+                'Category': expense.category,
+                'Payment Method': expense.payment_method,
+                'Status': expense.status,
+                'Receipt Number': expense.receipt_number or ''
+            })
+        
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Expenses', index=False)
+        
+        response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=\"expenses.xlsx\"'
+        return response
+
     def save(self, *args, **kwargs):
         # Auto-set submitted_by if not set and creating
         if not self.pk and not self.submitted_by:
@@ -154,7 +266,7 @@ class Expense(TimeStampedModel, ExportImportMixin):
             models.Index(fields=['budget', 'date']),
         ]
 
-class FinancialReport(TimeStampedModel, ExportImportMixin):
+class FinancialReport(TimeStampedModel, CustomExportMixin):
     REPORT_TYPES = [
         ('monthly', 'Monthly Report'),
         ('quarterly', 'Quarterly Report'),
@@ -216,6 +328,63 @@ class FinancialReport(TimeStampedModel, ExportImportMixin):
         if self.total_budget > 0:
             return (self.total_expenses / self.total_budget * 100)
         return 0
+
+    @classmethod
+    def export_to_csv(cls):
+        'Export financial reports to CSV'
+        import csv
+        from django.http import HttpResponse
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=\"financial_reports.csv\"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['Project', 'Title', 'Report Type', 'Period', 'Total Budget', 'Total Income', 'Total Expenses', 'Net Position', 'Profit Margin'])
+        
+        for report in cls.objects.all():
+            writer.writerow([
+                report.project.code,
+                report.title,
+                report.report_type,
+                report.report_period,
+                report.total_budget,
+                report.total_income,
+                report.total_expenses,
+                report.net_position,
+                f'{report.profit_margin:.1f}%'
+            ])
+        
+        return response
+
+    @classmethod
+    def export_to_excel(cls):
+        'Export financial reports to Excel'
+        import pandas as pd
+        from django.http import HttpResponse
+        from io import BytesIO
+        
+        data = []
+        for report in cls.objects.all():
+            data.append({
+                'Project': report.project.code,
+                'Title': report.title,
+                'Report Type': report.report_type,
+                'Period': report.report_period,
+                'Total Budget': report.total_budget,
+                'Total Income': report.total_income,
+                'Total Expenses': report.total_expenses,
+                'Net Position': report.net_position,
+                'Profit Margin': f'{report.profit_margin:.1f}%'
+            })
+        
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Financial Reports', index=False)
+        
+        response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=\"financial_reports.xlsx\"'
+        return response
 
     class Meta:
         ordering = ['-period_end', '-created_at']
