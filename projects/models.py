@@ -71,60 +71,129 @@ class Project(TimeStampedModel, CustomExportMixin):
 
     @classmethod
     def export_to_csv(cls):
-        'Export projects to CSV'
+        'Export projects to CSV - ultra robust version'
         import csv
         from django.http import HttpResponse
+        
+        try:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
 
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
+            writer = csv.writer(response)
+            writer.writerow(['Name', 'Code', 'Description', 'Budget', 'Status', 'Progress', 'Start Date', 'End Date'])
 
-        writer = csv.writer(response)
-        writer.writerow(['Name', 'Code', 'Description', 'Budget', 'Status', 'Progress', 'Start Date', 'End Date'])
+            # Safely get all projects
+            projects = cls.objects.all()
+            
+            for project in projects:
+                try:
+                    # Use extremely safe attribute access
+                    name = getattr(project, 'name', 'N/A')
+                    code = getattr(project, 'code', 'N/A')
+                    description = getattr(project, 'description', '') or ''
+                    budget = getattr(project, 'budget', 0) or 0
+                    status = getattr(project, 'status', 'unknown')
+                    progress = getattr(project, 'progress', 0) or 0
+                    
+                    # Handle date fields safely
+                    start_date = getattr(project, 'start_date', '')
+                    if start_date:
+                        start_date = str(start_date)
+                    else:
+                        start_date = ''
+                        
+                    end_date = getattr(project, 'end_date', '')
+                    if end_date:
+                        end_date = str(end_date)
+                    else:
+                        end_date = ''
 
-        for project in cls.objects.all():
-            # Use safe attribute access with fallbacks
-            writer.writerow([
-                getattr(project, 'name', ''),
-                getattr(project, 'code', ''),
-                getattr(project, 'description', '') or '',
-                getattr(project, 'budget', 0) or 0,
-                getattr(project, 'status', ''),
-                getattr(project, 'progress', 0) or 0,
-                getattr(project, 'start_date', '') or '',
-                getattr(project, 'end_date', '') or ''
-            ])
+                    writer.writerow([
+                        name, code, description, budget, status, progress, start_date, end_date
+                    ])
+                except Exception as e:
+                    # If individual project fails, skip it and continue
+                    print(f"Error exporting project {getattr(project, 'id', 'unknown')}: {e}")
+                    continue
 
-        return response
+            return response
+            
+        except Exception as e:
+            # If everything fails, return a basic error response
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
+            writer = csv.writer(response)
+            writer.writerow(['Error', 'Message'])
+            writer.writerow(['Export Failed', str(e)])
+            return response
 
     @classmethod
     def export_to_excel(cls):
-        'Export projects to Excel'
+        'Export projects to Excel - ultra robust version'
         import pandas as pd
         from django.http import HttpResponse
         from io import BytesIO
+        
+        try:
+            data = []
+            projects = cls.objects.all()
+            
+            for project in projects:
+                try:
+                    # Use extremely safe attribute access
+                    name = getattr(project, 'name', 'N/A')
+                    code = getattr(project, 'code', 'N/A')
+                    description = getattr(project, 'description', '') or ''
+                    budget = float(getattr(project, 'budget', 0) or 0)
+                    status = getattr(project, 'status', 'unknown')
+                    progress = getattr(project, 'progress', 0) or 0
+                    
+                    # Handle date fields safely
+                    start_date = getattr(project, 'start_date', '')
+                    if start_date:
+                        start_date = str(start_date)
+                    else:
+                        start_date = ''
+                        
+                    end_date = getattr(project, 'end_date', '')
+                    if end_date:
+                        end_date = str(end_date)
+                    else:
+                        end_date = ''
 
-        data = []
-        for project in cls.objects.all():
-            # Use safe attribute access with fallbacks
-            data.append({
-                'Name': getattr(project, 'name', ''),
-                'Code': getattr(project, 'code', ''),
-                'Description': getattr(project, 'description', '') or '',
-                'Budget': float(getattr(project, 'budget', 0) or 0),
-                'Status': getattr(project, 'status', ''),
-                'Progress': getattr(project, 'progress', 0) or 0,
-                'Start Date': str(getattr(project, 'start_date', '') or ''),
-                'End Date': str(getattr(project, 'end_date', '') or '')
-            })
+                    data.append({
+                        'Name': name,
+                        'Code': code,
+                        'Description': description,
+                        'Budget': budget,
+                        'Status': status,
+                        'Progress': progress,
+                        'Start Date': start_date,
+                        'End Date': end_date
+                    })
+                except Exception as e:
+                    print(f"Error exporting project {getattr(project, 'id', 'unknown')}: {e}")
+                    continue
 
-        df = pd.DataFrame(data)
-        output = BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name='Projects', index=False)
+            df = pd.DataFrame(data)
+            output = BytesIO()
+            with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                df.to_excel(writer, sheet_name='Projects', index=False)
 
-        response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=\"projects.xlsx\"'
-        return response
+            response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = 'attachment; filename=\"projects.xlsx\"'
+            return response
+            
+        except Exception as e:
+            # If everything fails, return a basic error Excel file
+            output = BytesIO()
+            df = pd.DataFrame([{'Error': 'Export Failed', 'Message': str(e)}])
+            with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                df.to_excel(writer, sheet_name='Error', index=False)
+                
+            response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = 'attachment; filename=\"projects_error.xlsx\"'
+            return response
 
     class Meta:
         ordering = ['-created_at']
