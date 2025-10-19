@@ -20,6 +20,7 @@ def public_export_excel(request):
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = [permissions.AllowAny]  # Make project endpoints public
 
     @action(detail=False, methods=['get'])
     def export_csv(self, request):
