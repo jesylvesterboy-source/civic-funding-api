@@ -7,4 +7,7 @@ router.register(r'projects', views.ProjectViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    # Public export endpoints (no authentication required)
+    path('projects/export/csv/', views.public_export_csv, name='public-export-csv'),
+    path('projects/export/excel/', views.public_export_excel, name='public-export-excel'),
 ]

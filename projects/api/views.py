@@ -1,4 +1,4 @@
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action, permission_classes, api_view
 from rest_framework.response import Response
 from rest_framework import viewsets, status, permissions
 from django.http import HttpResponse
@@ -6,20 +6,29 @@ import pandas as pd
 from ..models import Project
 from .serializers import ProjectSerializer
 
+# Public export views (no authentication required)
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def public_export_csv(request):
+    return Project.export_to_csv()
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def public_export_excel(request):
+    return Project.export_to_excel()
+
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
     @action(detail=False, methods=['get'])
-    @permission_classes([permissions.AllowAny])
     def export_csv(self, request):
-        # Export projects to CSV
+        # Export projects to CSV (requires authentication)
         return Project.export_to_csv()
 
     @action(detail=False, methods=['get'])
-    @permission_classes([permissions.AllowAny])
     def export_excel(self, request):
-        # Export projects to Excel
+        # Export projects to Excel (requires authentication)
         return Project.export_to_excel()
 
     @action(detail=False, methods=['post'])
@@ -45,7 +54,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
             )
 
     @action(detail=False, methods=['get'])
-    @permission_classes([permissions.AllowAny])
     def metrics(self, request):
         # Get project metrics for dashboard
         from django.db.models import Count, Sum, Avg
