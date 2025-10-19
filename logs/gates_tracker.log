@@ -1,0 +1,58 @@
+INFO 2025-10-19 15:16:42,429 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-10-19 15:17:27,839 django.server "GET /admin/projects/project/ HTTP/1.1" 301 0
+INFO 2025-10-19 15:17:27,867 django.server code 400, message Bad request syntax ('\x16\x03\x01\x06à\x01\x00\x06Ü\x03\x03\\\x95s\x17\x9di!g¨GE}\x93k')
+ERROR 2025-10-19 15:17:27,867 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:27,869 django.server code 400, message Bad request version ('\x00\x02\x01\x00ÿ\x01\x00\x01\x00DÍ\x00\x05\x00\x03\x02h2\x00')
+ERROR 2025-10-19 15:17:27,869 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:30,279 django.server code 400, message Bad request version ('r,è¤\x94¶ü')
+ERROR 2025-10-19 15:17:30,279 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:30,287 django.server code 400, message Bad request version ('6\x8c\x7fX')
+ERROR 2025-10-19 15:17:30,287 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:30,298 django.server code 400, message Bad request version ('úú\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06S\x9a\x9a\x00\x00\x00\x12\x00\x00\x00#\x00\x00\x00+\x00\x07\x06úú\x03\x04\x03\x03\x00')
+INFO 2025-10-19 15:17:30,298 django.server code 400, message Bad request version ('\x00x´')
+ERROR 2025-10-19 15:17:30,298 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-10-19 15:17:30,298 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:31,196 django.server code 400, message Bad request version ('\x8d-Æq\x80\x06Å\x14')
+ERROR 2025-10-19 15:17:31,196 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:31,196 django.server code 400, message Bad request version ('::\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06S\x1a\x1a\x00\x00\x00')
+ERROR 2025-10-19 15:17:31,205 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:31,205 django.server code 400, message Bad request version ('\x02h2\x08http/1.1\x00+\x00\x07\x06ºº\x03\x04\x03\x03\x00')
+ERROR 2025-10-19 15:17:31,205 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:31,205 django.server code 400, message Bad request version ('ÊÊ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06\x93')
+ERROR 2025-10-19 15:17:31,213 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:54,336 django.server "GET /admin/farmers/farmer/ HTTP/1.1" 301 0
+INFO 2025-10-19 15:17:54,352 django.server code 400, message Bad request version ('\x02h2\x08http/1.1DÍ\x00\x05\x00\x03\x02h2\x00')
+ERROR 2025-10-19 15:17:54,352 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:17:54,352 django.server code 400, message Bad request version ('jj\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06s')
+ERROR 2025-10-19 15:17:54,352 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-19 15:19:55,101 django.utils.autoreload Watching for file changes with StatReloader
+ERROR 2025-10-19 15:25:35,076 django.security.DisallowedHost Invalid HTTP_HOST header: '10.60.248.249:8000'. You may need to add '10.60.248.249' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\middleware\security.py", line 28, in process_request
+    host = self.redirect_host or request.get_host()
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '10.60.248.249:8000'. You may need to add '10.60.248.249' to ALLOWED_HOSTS.
+WARNING 2025-10-19 15:25:35,091 django.server "GET /admin/ HTTP/1.1" 400 70559
+ERROR 2025-10-19 15:25:35,432 django.security.DisallowedHost Invalid HTTP_HOST header: '10.60.248.249:8000'. You may need to add '10.60.248.249' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\middleware\security.py", line 28, in process_request
+    host = self.redirect_host or request.get_host()
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '10.60.248.249:8000'. You may need to add '10.60.248.249' to ALLOWED_HOSTS.
+WARNING 2025-10-19 15:25:35,432 django.server "GET /favicon.ico HTTP/1.1" 400 70451
