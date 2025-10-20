@@ -1,4 +1,4 @@
-"""
+﻿"""
 Django settings for gates_tracker project  PRODUCTION CONFIGURATION
 Author: Jeremiah Williams Sylvester
 """
@@ -33,6 +33,7 @@ AUTH_USER_MODEL = 'users.User'
 INSTALLED_APPS = [
     'users',
     'core',
+      'dashboard',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -248,4 +249,7 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'  # FSSS Dashboard
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
+
+
+
 

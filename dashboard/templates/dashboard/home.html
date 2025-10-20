@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSSS - Foundation for Sustainable Smallholders Solutions</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #2E8B57 0%, #3CB371 50%, #87CEEB 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(46, 139, 87, 0.1);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(46, 139, 87, 0.2);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -15px); }
+            100% { transform: translate(0, -0px); }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 via-blue-50 to-amber-50 min-h-screen">
+    <!--  HERO SECTION -->
+    <header class="hero-gradient text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 floating">
+                <i class="fas fa-leaf text-6xl"></i>
+            </div>
+            <div class="absolute top-20 right-20 floating" style="animation-delay: 1s;">
+                <i class="fas fa-tractor text-4xl"></i>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-6 py-16 relative z-10">
+            <nav class="flex justify-between items-center mb-12">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 bg-white rounded-full">
+                        <i class="fas fa-seedling text-3xl text-green-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">FSSS</h1>
+                        <p class="text-sm opacity-90">Sustainable Smallholders Solutions</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <a href="#impact" class="hover:text-green-200 transition duration-300">Our Impact</a>
+                    <a href="#metrics" class="hover:text-green-200 transition duration-300">Live Metrics</a>
+                    <a href="/admin/" class="glass-effect px-6 py-2 rounded-full hover:bg-white hover:text-green-600 transition duration-300">
+                        <i class="fas fa-cog mr-2"></i>Admin Panel
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'admin:logout' %}" class="bg-white text-green-600 px-6 py-2 rounded-full font-semibold hover:bg-green-100 transition duration-300">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </a>
+                    {% else %}
+                        <a href="{% url 'admin:login' %}" class="bg-white text-green-600 px-6 py-2 rounded-full font-semibold hover:bg-green-100 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Login
+                        </a>
+                    {% endif %}
+                </div>
+            </nav>
+            
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-5xl font-bold mb-6 leading-tight">
+                    Fostering Prosperity Through<br>
+                    <span class="text-yellow-300">Sustainable Farming</span>
+                </h2>
+                <p class="text-xl mb-8 opacity-95 leading-relaxed">
+                    Empowering smallholder farmers with innovative technology, sustainable practices, 
+                    and market access for a prosperous agricultural future.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#impact" class="bg-white text-green-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-green-50 transition duration-300 pulse-animation">
+                        <i class="fas fa-chart-line mr-2"></i>View Our Impact
+                    </a>
+                    <a href="#export" class="glass-effect border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-green-600 transition duration-300">
+                        <i class="fas fa-download mr-2"></i>Export Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--  IMPACT METRICS SECTION -->
+    <section id="impact" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-800 mb-4">Our Growing Impact</h3>
+                <p class="text-xl text-gray-600">Real-time metrics showcasing FSSS'"'"'s sustainable agricultural transformation</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Farmers Metric -->
+                <div class="metric-card rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="text-3xl font-bold text-gray-800 mb-2">{'{'}}{{ total_farmers }}{{'}'}}</h4>
+                    <p class="text-green-600 font-semibold">Smallholder Farmers</p>
+                    <p class="text-gray-500 text-sm mt-2">Empowered with sustainable practices</p>
+                </div>
+                
+                <!-- Projects Metric -->
+                <div class="metric-card rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-project-diagram text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="text-3xl font-bold text-gray-800 mb-2">{'{'}}{{ total_projects }}{{'}'}}</h4>
+                    <p class="text-blue-600 font-semibold">Active Projects</p>
+                    <p class="text-gray-500 text-sm mt-2">Driving agricultural innovation</p>
+                </div>
+                
+                <!-- Households Metric -->
+                <div class="metric-card rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-home text-2xl text-amber-600"></i>
+                    </div>
+                    <h4 class="text-3xl font-bold text-gray-800 mb-2">{'{'}}{{ total_households }}{{'}'}}</h4>
+                    <p class="text-amber-600 font-semibold">Households Impacted</p>
+                    <p class="text-gray-500 text-sm mt-2">Transforming rural communities</p>
+                </div>
+                
+                <!-- Economic Impact -->
+                <div class="metric-card rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-2xl text-purple-600"></i>
+                    </div>
+                    <h4 class="text-3xl font-bold text-gray-800 mb-2">${'{'}}{{ total_sales_value|floatformat:0 }}{{'}'}}</h4>
+                    <p class="text-purple-600 font-semibold">Economic Value</p>
+                    <p class="text-gray-500 text-sm mt-2">Generated through sustainable farming</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  CALL TO ACTION SECTION -->
+    <section class="py-12 bg-gradient-to-r from-green-600 to-green-700 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-3xl font-bold mb-4">Ready to Make an Impact?</h3>
+            <p class="text-xl mb-8 opacity-90">Join us in transforming smallholder agriculture across communities</p>
+            <div class="flex justify-center space-x-6">
+                <a href="/admin/" class="bg-white text-green-600 px-8 py-3 rounded-full font-bold hover:bg-green-50 transition duration-300">
+                    <i class="fas fa-plus-circle mr-2"></i>Add New Project
+                </a>
+                <a href="#export" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-green-600 transition duration-300">
+                    <i class="fas fa-file-export mr-2"></i>Generate Reports
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!--  EXPORT & DATA SECTION -->
+    <section id="export" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-800 mb-4">Data & Analytics</h3>
+                <p class="text-xl text-gray-600">Export comprehensive reports and access real-time data</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Farmers Export -->
+                <div class="metric-card rounded-2xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-users text-green-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Farmers Data</h4>
+                            <p class="text-sm text-gray-500">{'{'}}{{ total_farmers }}{{'}'}} records</p>
+                        </div>
+                    </div>
+                    <a href="/dashboard/export/farmers/" class="block w-full bg-green-600 text-white text-center py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                        <i class="fas fa-download mr-2"></i>Export Farmers Data
+                    </a>
+                </div>
+                
+                <!-- Projects Export -->
+                <div class="metric-card rounded-2xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-project-diagram text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Projects Data</h4>
+                            <p class="text-sm text-gray-500">{'{'}}{{ total_projects }}{{'}'}} records</p>
+                        </div>
+                    </div>
+                    <a href="/dashboard/export/projects/" class="block w-full bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-download mr-2"></i>Export Projects Data
+                    </a>
+                </div>
+                
+                <!-- Sales Export -->
+                <div class="metric-card rounded-2xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-line text-purple-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Sales Data</h4>
+                            <p class="text-sm text-gray-500">{'{'}}{{ total_sales }}{{'}'}} transactions</p>
+                        </div>
+                    </div>
+                    <a href="/dashboard/export/sales/" class="block w-full bg-purple-600 text-white text-center py-3 rounded-lg hover:bg-purple-700 transition duration-300">
+                        <i class="fas fa-download mr-2"></i>Export Sales Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  FOOTER -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center text-gray-400">
+                <p>&copy; {'{'}}{{ current_year }}{{'}'}} FSSS - Foundation for Sustainable Smallholders Solutions. All rights reserved.</p>
+                <p class="mt-2">Last Updated: {'{'}}{{ last_update|date:"M d, Y H:i" }}{{'}'}}</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
