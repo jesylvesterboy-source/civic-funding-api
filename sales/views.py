@@ -1,3 +1,8 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.generic import TemplateView
+from .models import Sale, Purchase, Customer, Product, ProductCategory, SaleItem, PurchaseItem
+
 class DashboardView(TemplateView):
     template_name = 'sales/dashboard.html'
 
@@ -8,7 +13,7 @@ class DashboardView(TemplateView):
         context['sales_metrics'] = Sale.get_sales_metrics()
         context['purchase_metrics'] = Purchase.get_purchase_metrics()
         
-        # Recent records
+        # Recent records with detailed item data
         recent_sales = Sale.objects.select_related('customer').prefetch_related('items__product').order_by('-sale_date')[:10]
         recent_purchases = Purchase.objects.select_related('customer').prefetch_related('items__product_category').order_by('-purchase_date')[:10]
         
@@ -79,3 +84,33 @@ class DashboardView(TemplateView):
             'product_sales': list(product_sales),
             'dates': [(start_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(8)]
         }
+
+# Main model exports
+def export_sales_csv(request):
+    return Sale.export_to_csv()
+
+def export_purchases_csv(request):
+    return Purchase.export_to_csv()
+
+def export_customers_csv(request):
+    return Customer.export_to_csv()
+
+def export_products_csv(request):
+    return Product.export_to_csv()
+
+def export_categories_csv(request):
+    return ProductCategory.export_to_csv()
+
+# Record exports
+def export_sales_records_csv(request):
+    return Sale.export_sales_records_csv()
+
+def export_purchase_records_csv(request):
+    return Purchase.export_purchase_records_csv()
+
+# Item exports
+def export_sale_items_csv(request):
+    return SaleItem.export_to_csv()
+
+def export_purchase_items_csv(request):
+    return PurchaseItem.export_to_csv()
