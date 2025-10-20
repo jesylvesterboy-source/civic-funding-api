@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.conf import settings
 from core.models import TimeStampedModel, AutoExportMixin
 from projects.models import Project  # Now this will work!
@@ -9,10 +8,10 @@ class MonitoringVisit(TimeStampedModel, AutoExportMixin):
     """Tracks monitoring and evaluation visits for accountability."""
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='visits')
-    visit_date = models.DateField(default=timezone.now)
-    visited_by = models.CharField(max_length=150, default="Field Officer")
-    purpose = models.CharField(max_length=250, default="Routine Monitoring")
-    findings = models.TextField(default="Initial assessment in progress")
+    visit_date = models.DateField()
+    visited_by = models.CharField(max_length=150)
+    purpose = models.CharField(max_length=250)
+    findings = models.TextField()
     recommendations = models.TextField(blank=True, null=True)
     follow_up_required = models.BooleanField(default=False)
     next_visit_date = models.DateField(blank=True, null=True)
@@ -38,8 +37,8 @@ class Report(TimeStampedModel, AutoExportMixin):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='reports')
     report_type = models.CharField(max_length=20, choices=REPORT_TYPE_CHOICES)
-    reporting_period_start = models.DateField(default=timezone.now)
-    reporting_period_end = models.DateField(default=timezone.now)
+    reporting_period_start = models.DateField()
+    reporting_period_end = models.DateField()
     summary = models.TextField(help_text="Narrative summary of project activities and progress.")
     
     # ✅ CORRECTED: Use settings.AUTH_USER_MODEL
@@ -68,6 +67,3 @@ class Report(TimeStampedModel, AutoExportMixin):
 
     def __str__(self):
         return f"{self.project.name} - {self.report_type} ({self.reporting_period_end.year})"
-
-
-

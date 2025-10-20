@@ -189,7 +189,7 @@ class Sale(AuditModel, CustomExportMixin):
     ]
 
     # Core Sale Information
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='sales', null=True, blank=True)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='sales')
     sale_date = models.DateTimeField(auto_now_add=True)
     sale_number = models.CharField(max_length=50, unique=True)
 
@@ -334,7 +334,7 @@ class Sale(AuditModel, CustomExportMixin):
 class SaleItem(TimeStampedModel):
     """Individual items within a sale with all requested fields"""
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
 
@@ -380,7 +380,7 @@ class SaleItem(TimeStampedModel):
 
 class Purchase(AuditModel, CustomExportMixin):
     """Supplier purchase tracking with inventory management"""
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='purchases', null=True, blank=True)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='purchases')
     purchase_date = models.DateTimeField(auto_now_add=True)
     purchase_number = models.CharField(max_length=50, unique=True)
 
@@ -497,7 +497,7 @@ class Purchase(AuditModel, CustomExportMixin):
 
 class PurchaseItem(TimeStampedModel):
     """Individual items within a purchase with all requested fields"""
-    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, related_name='items', null=True, blank=True)
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, related_name='items')
     product_category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT)
     product_name = models.CharField(max_length=200)
     product_attribute = models.CharField(max_length=100, blank=True, null=True)
@@ -560,7 +560,4 @@ class PurchaseItem(TimeStampedModel):
             ])
 
         return response
-
-
-
 
