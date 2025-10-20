@@ -422,3 +422,26 @@
     </script>
 </body>
 </html>
+        <!-- System Setup Alert -->
+        {% if not tables_exist %}
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning text-center">
+                    <h4> System Setup Required</h4>
+                    <p class="mb-3">The database is being initialized. This is normal for first-time deployment.</p>
+                    <p><strong>Your robust sales and purchase system will be ready shortly!</strong></p>
+                    <div class="mt-3">
+                        <p>Features that will be available:</p>
+                        <ul class="list-unstyled">
+                            <li> Professional metrics dashboard with charts</li>
+                            <li> Complete sales and purchase tracking</li>
+                            <li> CSV exports for all data</li>
+                            <li> Automatic stock management</li>
+                            <li> Customer analytics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Rest of your existing dashboard content -->
