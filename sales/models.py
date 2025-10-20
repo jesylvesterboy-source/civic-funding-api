@@ -537,3 +537,134 @@ class PurchaseItem(TimeStampedModel):
 
     def __str__(self):
         return f'{self.product_name} - {self.quantity} {self.unit_measure}'
+    @classmethod
+    def export_to_csv(cls):
+        """Export product categories to CSV"""
+        import csv
+        from django.http import HttpResponse
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="product_categories.csv"'
+        writer = csv.writer(response)
+
+        headers = ['Name', 'Description', 'Parent Category', 'Created', 'Updated']
+        writer.writerow(headers)
+
+        for category in cls.objects.all():
+            writer.writerow([
+                category.name,
+                category.description or '',
+                category.parent_category.name if category.parent_category else '',
+                category.created_at.strftime('%Y-%m-%d %H:%M'),
+                category.updated_at.strftime('%Y-%m-%d %H:%M')
+            ])
+
+        return response
+
+class Product(TimeStampedModel, CustomExportMixin):
+    # ... existing Product code ...
+
+    @classmethod
+    def export_to_csv(cls):
+        """Export products to CSV"""
+        import csv
+        from django.http import HttpResponse
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="products.csv"'
+        writer = csv.writer(response)
+
+        headers = [
+            'Name', 'Category', 'Description', 'Unit Measure', 'Cost Price', 
+            'Selling Price', 'Current Stock', 'Minimum Stock', 'Brand', 
+            'Variety', 'Size', 'Grade', 'SKU', 'Active', 'Profit Margin'
+        ]
+        writer.writerow(headers)
+
+        for product in cls.objects.all():
+            writer.writerow([
+                product.name,
+                product.product_category.name,
+                product.description or '',
+                product.unit_measure,
+                product.cost_price,
+                product.selling_price,
+                product.current_stock,
+                product.minimum_stock,
+                product.brand or '',
+                product.variety or '',
+                product.size or '',
+                product.grade or '',
+                product.sku,
+                'Yes' if product.is_active else 'No',
+                f"{product.profit_margin:.1f}%"
+            ])
+
+        return response
+
+class SaleItem(TimeStampedModel):
+    # ... existing SaleItem code ...
+
+    @classmethod
+    def export_to_csv(cls):
+        """Export sale items to CSV"""
+        import csv
+        from django.http import HttpResponse
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="sale_items.csv"'
+        writer = csv.writer(response)
+
+        headers = [
+            'Sale Number', 'Product', 'Attribute Name', 'Unit Measure', 
+            'Quantity', 'Unit Price', 'Line Total', 'Created'
+        ]
+        writer.writerow(headers)
+
+        for item in cls.objects.all().select_related('sale', 'product'):
+            writer.writerow([
+                item.sale.sale_number,
+                item.product.name,
+                item.attribute_name,
+                item.product.unit_measure,
+                item.quantity,
+                item.unit_price,
+                item.line_total,
+                item.created_at.strftime('%Y-%m-%d %H:%M')
+            ])
+
+        return response
+
+class PurchaseItem(TimeStampedModel):
+    # ... existing PurchaseItem code ...
+
+    @classmethod
+    def export_to_csv(cls):
+        """Export purchase items to CSV"""
+        import csv
+        from django.http import HttpResponse
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="purchase_items.csv"'
+        writer = csv.writer(response)
+
+        headers = [
+            'Purchase Number', 'Product Category', 'Product Name', 'Product Attribute',
+            'Unit Measure', 'Quantity', 'Unit Price', 'Line Total', 'Created'
+        ]
+        writer.writerow(headers)
+
+        for item in cls.objects.all().select_related('purchase', 'product_category'):
+            writer.writerow([
+                item.purchase.purchase_number,
+                item.product_category.name,
+                item.product_name,
+                item.product_attribute or '',
+                item.unit_measure,
+                item.quantity,
+                item.unit_price,
+                item.line_total,
+                item.created_at.strftime('%Y-%m-%d %H:%M')
+            ])
+
+        return response
