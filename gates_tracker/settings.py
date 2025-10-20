@@ -1,4 +1,4 @@
-﻿"""
+"""
 Django settings for gates_tracker project  PRODUCTION CONFIGURATION
 Author: Jeremiah Williams Sylvester
 """
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'finances',
     'indicators',
     'reports',
+    'sales',
 ]
 
 MIDDLEWARE = [
