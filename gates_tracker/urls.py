@@ -2,12 +2,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
+from .views import FSSTrackerDashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sales/', include('sales.urls')),
-    path('', RedirectView.as_view(url='/admin/', permanent=False)),
+    path('', FSSTrackerDashboard.as_view(), name='fsss_dashboard'),
 ]
 
 if settings.DEBUG:
