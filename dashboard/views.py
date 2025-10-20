@@ -30,8 +30,8 @@ def home(request):
     active_projects = Project.objects.filter(status='active').count()
     completed_projects = Project.objects.filter(status='completed').count()
     
-    # Financial Impact
-    total_budget = Budget.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+    # Financial Impact - USING CORRECT FIELD NAMES
+    total_budget = Budget.objects.aggregate(Sum('allocated_amount'))['allocated_amount__sum'] or 0
     total_expenses = Expense.objects.aggregate(Sum('amount'))['amount__sum'] or 0
     total_sales_value = Sale.objects.aggregate(Sum('total_amount'))['total_amount__sum'] or 0
     
