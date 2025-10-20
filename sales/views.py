@@ -47,3 +47,42 @@ class DashboardView(TemplateView):
             return False
 
 # ... keep the rest of your export functions ...
+
+# Main model exports
+def export_sales_csv(request):
+    from .models import Sale
+    return Sale.export_to_csv()
+
+def export_purchases_csv(request):
+    from .models import Purchase
+    return Purchase.export_to_csv()
+
+def export_customers_csv(request):
+    from .models import Customer
+    return Customer.export_to_csv()
+
+def export_products_csv(request):
+    from .models import Product
+    return Product.export_to_csv()
+
+def export_categories_csv(request):
+    from .models import ProductCategory
+    return ProductCategory.export_to_csv()
+
+# Record exports
+def export_sales_records_csv(request):
+    from .models import Sale
+    return Sale.export_sales_records_csv()
+
+def export_purchase_records_csv(request):
+    from .models import Purchase
+    return Purchase.export_purchase_records_csv()
+
+# Item exports
+def export_sale_items_csv(request):
+    from .models import SaleItem
+    return SaleItem.export_to_csv()
+
+def export_purchase_items_csv(request):
+    from .models import PurchaseItem
+    return PurchaseItem.export_to_csv()
