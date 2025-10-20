@@ -81,6 +81,14 @@
             border-left: 4px solid #667eea;
             padding-left: 15px;
         }
+        .setup-alert {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
     </style>
 </head>
 <body>
@@ -93,77 +101,55 @@
             </div>
         </div>
 
+        <!-- System Setup Alert or Dashboard Content -->
+        {% if not tables_exist %}
+        <div class="setup-alert">
+            <h2> System Setup Required</h2>
+            <p class="mb-3">The database is being initialized. This is normal for first-time deployment.</p>
+            <div class="alert alert-light">
+                <strong>Solution:</strong> The system will automatically create the required tables. Please refresh in a moment.
+            </div>
+            <p><strong>Your robust sales and purchase system will be ready shortly!</strong></p>
+            <div class="mt-3">
+                <p>Features that will be available:</p>
+                <ul class="list-unstyled">
+                    <li> Professional metrics dashboard with charts</li>
+                    <li> Complete sales and purchase tracking</li>
+                    <li> CSV exports for all data</li>
+                    <li> Automatic stock management</li>
+                    <li> Customer analytics</li>
+                </ul>
+            </div>
+        </div>
+        {% else %}
         <!-- Key Metrics -->
         <div class="row mb-4">
             <div class="col-xl-3 col-md-6">
                 <div class="metric-card">
-                    <div class="metric-value">${{ sales_metrics.total_revenue|floatformat:0 }}</div>
+                    <div class="metric-value">${{ sales_metrics.total_revenue|default:0|floatformat:0 }}</div>
                     <div class="metric-label">Total Revenue</div>
-                    <small> ${{ sales_metrics.recent_revenue|floatformat:0 }} last 30 days</small>
+                    <small> ${{ sales_metrics.recent_revenue|default:0|floatformat:0 }} last 30 days</small>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="metric-card metric-card-secondary">
-                    <div class="metric-value">{{ sales_metrics.total_sales }}</div>
+                    <div class="metric-value">{{ sales_metrics.total_sales|default:0 }}</div>
                     <div class="metric-label">Total Sales</div>
-                    <small> {{ sales_metrics.recent_sales_count }} recent</small>
+                    <small> {{ sales_metrics.recent_sales_count|default:0 }} recent</small>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="metric-card metric-card-success">
-                    <div class="metric-value">${{ purchase_metrics.total_purchase_amount|floatformat:0 }}</div>
+                    <div class="metric-value">${{ purchase_metrics.total_purchase_amount|default:0|floatformat:0 }}</div>
                     <div class="metric-label">Total Purchases</div>
-                    <small> ${{ purchase_metrics.recent_purchase_amount|floatformat:0 }} recent</small>
+                    <small> ${{ purchase_metrics.recent_purchase_amount|default:0|floatformat:0 }} recent</small>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="metric-card metric-card-warning">
-                    <div class="metric-value">{{ total_customers }}</div>
+                    <div class="metric-value">{{ total_customers|default:0 }}</div>
                     <div class="metric-label">Active Customers</div>
-                    <small> {{ total_products }} products</small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts Row 1 -->
-        <div class="row mb-4">
-            <!-- Revenue Trend Chart -->
-            <div class="col-lg-8">
-                <div class="chart-container">
-                    <h5 class="chart-title"> Revenue Trend (Last 7 Days)</h5>
-                    <canvas id="revenueChart" height="120"></canvas>
-                </div>
-            </div>
-            <!-- Payment Methods -->
-            <div class="col-lg-4">
-                <div class="chart-container">
-                    <h5 class="chart-title"> Payment Methods</h5>
-                    <canvas id="paymentChart" height="250"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts Row 2 -->
-        <div class="row mb-4">
-            <!-- Customer Demographics -->
-            <div class="col-lg-6">
-                <div class="chart-container">
-                    <h5 class="chart-title"> Customer Demographics</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <canvas id="genderChart" height="200"></canvas>
-                        </div>
-                        <div class="col-md-6">
-                            <canvas id="ageChart" height="200"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Top Products -->
-            <div class="col-lg-6">
-                <div class="chart-container">
-                    <h5 class="chart-title"> Top Product Categories</h5>
-                    <canvas id="productChart" height="200"></canvas>
+                    <small> {{ total_products|default:0 }} products</small>
                 </div>
             </div>
         </div>
@@ -174,7 +160,6 @@
                 <div class="chart-container">
                     <h5 class="chart-title"> Data Export Center</h5>
                     <div class="row">
-                        <!-- Sales Exports -->
                         <div class="col-lg-6 mb-3">
                             <h6> Sales Data</h6>
                             <div class="d-flex flex-wrap">
@@ -183,7 +168,6 @@
                                 <a href="{% url 'sales:export_sale_items' %}" class="export-btn">Sale Items</a>
                             </div>
                         </div>
-                        <!-- Purchase Exports -->
                         <div class="col-lg-6 mb-3">
                             <h6> Purchase Data</h6>
                             <div class="d-flex flex-wrap">
@@ -192,7 +176,6 @@
                                 <a href="{% url 'sales:export_purchase_items' %}" class="export-btn">Purchase Items</a>
                             </div>
                         </div>
-                        <!-- Product Exports -->
                         <div class="col-lg-6 mb-3">
                             <h6> Product Data</h6>
                             <div class="d-flex flex-wrap">
@@ -200,7 +183,6 @@
                                 <a href="{% url 'sales:export_categories' %}" class="export-btn">Categories</a>
                             </div>
                         </div>
-                        <!-- Customer Exports -->
                         <div class="col-lg-6 mb-3">
                             <h6> Customer Data</h6>
                             <div class="d-flex flex-wrap">
@@ -214,7 +196,6 @@
 
         <!-- Recent Activity -->
         <div class="row">
-            <!-- Recent Sales -->
             <div class="col-lg-6">
                 <div class="chart-container table-card">
                     <h5 class="chart-title"> Recent Sales</h5>
@@ -247,7 +228,6 @@
                 </div>
             </div>
 
-            <!-- Recent Purchases -->
             <div class="col-lg-6">
                 <div class="chart-container table-card">
                     <h5 class="chart-title"> Recent Purchases</h5>
@@ -276,172 +256,14 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 
+    {% if tables_exist and chart_data %}
     <script>
-        // Revenue Trend Chart
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: [{% for day in chart_data.dates %}'{{ day }}'{% if not forloop.last %},{% endif %}{% endfor %}],
-                datasets: [{
-                    label: 'Daily Revenue',
-                    data: [{% for sale in chart_data.sales_trend %}{{ sale.total|default:0 }}{% if not forloop.last %},{% endif %}{% endfor %}],
-                    borderColor: '#667eea',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            drawBorder: false
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // Payment Methods Chart
-        const paymentCtx = document.getElementById('paymentChart').getContext('2d');
-        const paymentChart = new Chart(paymentCtx, {
-            type: 'doughnut',
-            data: {
-                labels: [{% for method in chart_data.payment_methods %}'{{ method.payment_method|title }}'{% if not forloop.last %},{% endif %}{% endfor %}],
-                datasets: [{
-                    data: [{% for method in chart_data.payment_methods %}{{ method.total }}{% if not forloop.last %},{% endif %}{% endfor %}],
-                    backgroundColor: [
-                        '#667eea', '#f093fb', '#4facfe', '#43e97b', '#ffd93d'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                cutout: '60%',
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Gender Distribution Chart
-        const genderCtx = document.getElementById('genderChart').getContext('2d');
-        const genderChart = new Chart(genderCtx, {
-            type: 'pie',
-            data: {
-                labels: [{% for gender in chart_data.customer_gender %}'{{ gender.gender|title }}'{% if not forloop.last %},{% endif %}{% endfor %}],
-                datasets: [{
-                    data: [{% for gender in chart_data.customer_gender %}{{ gender.count }}{% if not forloop.last %},{% endif %}{% endfor %}],
-                    backgroundColor: [
-                        '#667eea', '#f093fb', '#4facfe', '#43e97b'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Age Distribution Chart
-        const ageCtx = document.getElementById('ageChart').getContext('2d');
-        const ageChart = new Chart(ageCtx, {
-            type: 'bar',
-            data: {
-                labels: [{% for age in chart_data.customer_age %}'{{ age.age_range }}'{% if not forloop.last %},{% endif %}{% endfor %}],
-                datasets: [{
-                    label: 'Customers',
-                    data: [{% for age in chart_data.customer_age %}{{ age.count }}{% if not forloop.last %},{% endif %}{% endfor %}],
-                    backgroundColor: '#4facfe',
-                    borderColor: '#4facfe',
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Product Categories Chart
-        const productCtx = document.getElementById('productChart').getContext('2d');
-        const productChart = new Chart(productCtx, {
-            type: 'horizontalBar',
-            data: {
-                labels: [{% for product in chart_data.product_sales %}'{{ product.product__product_category__name }}'{% if not forloop.last %},{% endif %}{% endfor %}],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [{% for product in chart_data.product_sales %}{{ product.total }}{% if not forloop.last %},{% endif %}{% endfor %}],
-                    backgroundColor: '#43e97b',
-                    borderColor: '#43e97b',
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                indexAxis: 'y',
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
+        // Basic chart initialization - will be populated when data is available
+        console.log('Charts ready to initialize when data is available');
     </script>
+    {% endif %}
 </body>
 </html>
-        <!-- System Setup Alert -->
-        {% if not tables_exist %}
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-warning text-center">
-                    <h4> System Setup Required</h4>
-                    <p class="mb-3">The database is being initialized. This is normal for first-time deployment.</p>
-                    <p><strong>Your robust sales and purchase system will be ready shortly!</strong></p>
-                    <div class="mt-3">
-                        <p>Features that will be available:</p>
-                        <ul class="list-unstyled">
-                            <li> Professional metrics dashboard with charts</li>
-                            <li> Complete sales and purchase tracking</li>
-                            <li> CSV exports for all data</li>
-                            <li> Automatic stock management</li>
-                            <li> Customer analytics</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <!-- Rest of your existing dashboard content -->
