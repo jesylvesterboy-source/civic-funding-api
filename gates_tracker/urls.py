@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import RootDashboardView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sales/', include('sales.urls')),
-    # ... keep your existing URLs here ...
+    path('', RootDashboardView.as_view(), name='root_dashboard'),
 ]
 
 if settings.DEBUG:
