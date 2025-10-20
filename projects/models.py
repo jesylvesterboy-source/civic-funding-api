@@ -28,111 +28,68 @@ class Project(TimeStampedModel, CustomExportMixin):
     region = models.CharField(max_length=100, blank=True, null=True)
     district = models.CharField(max_length=100, blank=True, null=True)
     gps_coordinates = models.CharField(max_length=100, blank=True, null=True)
-    
-    # Financial Details
+
+    # Financial Information
     currency = models.CharField(max_length=10, default='USD', blank=True, null=True)
     donor = models.CharField(max_length=200, blank=True, null=True)
     implementing_partner = models.CharField(max_length=200, blank=True, null=True)
-    
-    # Project Management
-    manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='managed_projects')
+
+    # Project Management - ROBUST VERSION
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                                related_name='managed_projects')
+    # ESSENTIAL ROBUST FIELD: Project Manager for accountability
+    project_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                                        related_name='project_managed_projects', verbose_name='Project Manager',
+                                        help_text='Primary accountable person for project delivery')
     is_active = models.BooleanField(default=True)
-    priority = models.CharField(max_length=20, choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High')], default='medium')
+    priority = models.CharField(max_length=20, choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High')],
+                                default='medium')
     requires_approval = models.BooleanField(default=True)
-    
-    # Timeline Extensions
+
+    # Timeline Tracking
     actual_start_date = models.DateField(blank=True, null=True)
     actual_end_date = models.DateField(blank=True, null=True)
-    
-    # Risk Management
-    risk_level = models.CharField(max_length=20, choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High')], default='medium')
-    risks = models.TextField(blank=True, null=True)
+
+    # Risk Management - ROBUST VERSION
+    risk_level = models.CharField(max_length=20, choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High')],
+                                  default='medium')
+    risks = models.TextField(blank=True, null=True, help_text='List of identified risks')
+    # ESSENTIAL ROBUST FIELD: Detailed risk assessment notes
+    risk_notes = models.TextField(blank=True, null=True, verbose_name='Risk Assessment Notes',
+                                  help_text='Detailed risk analysis, mitigation strategies, and contingency plans')
     objectives = models.TextField(blank=True, null=True)
     success_criteria = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    
-    # Categorization
     tags = models.CharField(max_length=500, blank=True, null=True, help_text='Comma-separated tags')
 
-    def __str__(self):
-        return f'{self.code} - {self.name}'
-
-    @classmethod
-    def export_to_csv(cls):
-        'Export projects to CSV - ABSOLUTE MINIMUM VERSION'
-        import csv
-        from django.http import HttpResponse
-        
-        # Create response FIRST - this never fails
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=\"projects.csv\"'
-        writer = csv.writer(response)
-        
-        # Write headers - this never fails
-        writer.writerow(['ID', 'Project Name', 'Project Code', 'Status'])
-        
-        try:
-            # Try to get count of projects
-            count = cls.objects.count()
-            
-            if count > 0:
-                # If projects exist, try to export them
-                for project in cls.objects.all().only('id', 'name', 'code', 'status'):
-                    writer.writerow([
-                        project.id,
-                        project.name,
-                        project.code, 
-                        project.status
-                    ])
-            else:
-                # No projects - just headers
-                pass
-                
-        except Exception:
-            # If ANYTHING fails, just return the headers
-            pass
-
-        return response
-
-    @classmethod
-    def export_to_excel(cls):
-        'Export projects to Excel - ABSOLUTE MINIMUM VERSION'
-        import pandas as pd
-        from django.http import HttpResponse
-        from io import BytesIO
-        
-        # Create basic data structure that cannot fail
-        data = [{'ID': '', 'Project Name': '', 'Project Code': '', 'Status': ''}]
-        
-        try:
-            # Try to add real data
-            projects_data = []
-            for project in cls.objects.all().only('id', 'name', 'code', 'status'):
-                projects_data.append({
-                    'ID': project.id,
-                    'Project Name': project.name,
-                    'Project Code': project.code,
-                    'Status': project.status
-                })
-            
-            if projects_data:
-                data = projects_data
-                
-        except Exception:
-            # If anything fails, keep the empty structure
-            pass
-
-        # Create Excel - this part cannot fail
-        df = pd.DataFrame(data)
-        output = BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name='Projects', index=False)
-
-        response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=\"projects.xlsx\"'
-        return response
-
     class Meta:
-        ordering = ['-created_at']
+        db_table = 'projects_project'
         verbose_name = 'Project'
         verbose_name_plural = 'Projects'
+        ordering = ['-start_date', 'name']
+        indexes = [
+            models.Index(fields=['status', 'start_date']),
+            models.Index(fields=['start_date']),
+            models.Index(fields=['country']),
+        ]
+
+    def __str__(self):
+        return f"{self.code} - {self.name}"
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('project-detail', kwargs={'pk': self.pk})
+
+    @property
+    def is_completed(self):
+        return self.status == 'completed'
+
+    @property
+    def is_active_status(self):
+        return self.status == 'active'
+
+    @property
+    def duration_days(self):
+        if self.start_date and self.end_date:
+            return (self.end_date - self.start_date).days
+        return None
