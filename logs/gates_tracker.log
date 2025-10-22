@@ -188,3 +188,113 @@ INFO 2025-10-20 23:43:54,555 django.server code 400, message Bad request version
 ERROR 2025-10-20 23:43:54,555 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
 INFO 2025-10-20 23:43:54,555 django.server code 400, message Bad request version ('@\x7f°vs\x8cÛª·MïZÓ\x01ù\x8cÏöÈsÆVê\x15]\x84â\x10|ìÍµ:Ó":Ç«IÍ±//:êJîJ\x08jÝ¸Ì1/\'©ò\x90âpY\x9dyÙQa^ÌÄ©ÝôZ"â3')
 ERROR 2025-10-20 23:43:54,555 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-10-22 19:43:42,812 django.security.DisallowedHost Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\middleware\security.py", line 28, in process_request
+    host = self.redirect_host or request.get_host()
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+ERROR 2025-10-22 19:43:42,843 django.security.DisallowedHost Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\middleware\security.py", line 28, in process_request
+    host = self.redirect_host or request.get_host()
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+ERROR 2025-10-22 19:43:42,874 django.security.DisallowedHost Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\middleware\security.py", line 28, in process_request
+    host = self.redirect_host or request.get_host()
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MY PC\civic-funding-api\venv\Lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+INFO 2025-10-22 19:55:20,108 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-10-22 19:55:42,990 django.server "GET / HTTP/1.1" 301 0
+INFO 2025-10-22 19:55:43,309 django.server code 400, message Bad request version ('ÊÊ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06¥\x1a\x1a\x00\x00\x00-\x00\x02\x01\x01\x00#\x00\x00DÍ\x00\x05\x00\x03\x02h2\x00')
+ERROR 2025-10-22 19:55:43,309 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:43,573 django.server code 400, message Bad request version ('\x00;x\x02Ô©Æ\x18¥SæQa!«_¦\x7fÓÛ£oèJ\x96K[oJ\\G\x92)ý$Å%¦\x0f\x17ÜNØ')
+ERROR 2025-10-22 19:55:43,573 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:43,624 django.server code 400, message Bad request version ('®\x05W}ÒA\x13\x1b·æY\x97c¥K\x16,6V+fÅT\x16e\x9b¬\x90\x87³\x01\x8b\x96MF\x10\x96U')
+ERROR 2025-10-22 19:55:43,624 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:43,890 django.server code 400, message Bad request version ('U\x12\x08\x97ò¢\xad|;¬,\x9d\x87\x92\x83\x06\x18\x92éñ\x9ej')
+ERROR 2025-10-22 19:55:43,890 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:46,022 django.server code 400, message Bad request version ('\x02h2\x08http/1.1\x00\x12\x00\x00\x00-\x00\x02\x01\x01\x00+\x00\x07\x06zz\x03\x04\x03\x03\x00')
+ERROR 2025-10-22 19:55:46,022 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:46,022 django.server code 400, message Bad request version ('\x02h2\x08http/1.1DÍ\x00\x05\x00\x03\x02h2\x00')
+ERROR 2025-10-22 19:55:46,030 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:46,271 django.server code 400, message Bad request version ('ZZ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06')
+ERROR 2025-10-22 19:55:46,274 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:46,340 django.server code 400, message Bad request version ("0}àG=ZÁÈHCNê\x8aL5jEÉ9\x82\x95v)Ë\x83·Äw\x07Ke£K%D-¡\x006ãC×ùn\x87iQÚ\x90+?º\x9eó',\x8eL\x94")
+INFO 2025-10-22 19:55:46,340 django.server code 400, message Bad request version ('ÊÊ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06Eúú\x00\x00\x00+\x00\x07\x06ªª\x03\x04\x03\x03\x00\x12\x00\x00\x00\x05\x00\x05\x01\x00\x00\x00\x00\x00')
+ERROR 2025-10-22 19:55:46,340 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-10-22 19:55:46,340 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:55:46,590 django.server code 400, message Bad request version ('&ªø\x8a\x9b.')
+ERROR 2025-10-22 19:55:46,590 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:23,125 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-10-22 19:57:38,218 django.server "GET / HTTP/1.1" 301 0
+INFO 2025-10-22 19:57:38,218 django.server code 400, message Bad request version (',oÝæ\x8dE\x9cÉVeoöSÌ½zÁî')
+ERROR 2025-10-22 19:57:38,218 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:38,234 django.server code 400, message Bad request version ('ÉåçG]')
+ERROR 2025-10-22 19:57:38,235 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:42,468 django.server code 400, message Bad request version ('1;\x8d:å)ìØÉ¸4\x8c·V\x87Ü\x11´§p\x10Út=1!AfG\x81\x16|/\x14ø\x87©\x14\x06Å')
+ERROR 2025-10-22 19:57:42,483 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:42,486 django.server code 400, message Bad request version ('::\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06\x93ÊÊ\x00\x00\x00\x12\x00\x00\x00')
+ERROR 2025-10-22 19:57:42,486 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:42,486 django.server code 400, message Bad request version ('/')
+ERROR 2025-10-22 19:57:42,486 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:42,503 django.server code 400, message Bad request version (':.\x08\x06aFf')
+ERROR 2025-10-22 19:57:42,522 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,290 django.server code 400, message Bad request version ('\x8f£»°\x8a\x99,oÓJK«')
+ERROR 2025-10-22 19:57:43,290 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,290 django.server code 400, message Bad request version ('pãÑ')
+ERROR 2025-10-22 19:57:43,302 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,302 django.server code 400, message Bad request version ('\x9a\x9a\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06\x93\x9a\x9a\x00\x00\x00')
+ERROR 2025-10-22 19:57:43,302 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,302 django.server code 400, message Bad request version ('\x96')
+ERROR 2025-10-22 19:57:43,302 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,548 django.server code 400, message Bad request version ('à8Ç³\x00')
+ERROR 2025-10-22 19:57:43,548 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,548 django.server code 400, message Bad request version ('\x88ãl\x18ªLDº5¢vXz\x9cº£\x17|\x07\x94|\x1b©\x7feì¬>ke\x9f¹')
+ERROR 2025-10-22 19:57:43,548 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,567 django.server code 400, message Bad request version ('\x00\x12\x00\x10\x04\x03\x08\x04\x04\x01\x05\x03\x08\x05\x05\x01\x08\x06\x06\x01\x00')
+INFO 2025-10-22 19:57:43,567 django.server code 400, message Bad request version ('CQà\x1a´4\x80\x9e×·¬\x98Á³\\ÈA,Z>8\x1a©Òi,jÃ\x07\x98kZRN\x1a\x99p£7\x81\x96e~®´')
+ERROR 2025-10-22 19:57:43,567 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-10-22 19:57:43,567 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,897 django.server code 400, message Bad request version ('0Z½\x99Ð#àékW#eâZ\x9aÅ\x04\x99Çâ\x12lwÏ$Ú¹\x8cy\x07N¹«Yòw\x8c\x16Èõ#k×;0:ú\x1aËfhe\x93¦\x05')
+INFO 2025-10-22 19:57:43,917 django.server code 400, message Bad request version ('\x12ïÞ\x0fï\x88ûx=¤iE\x12\x17\x19\x93eX')
+ERROR 2025-10-22 19:57:43,917 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-10-22 19:57:43,917 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,917 django.server code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x07\x00\x01\x00\x06ü\x03\x03èðù\x06ÚVÚe')
+ERROR 2025-10-22 19:57:43,917 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:43,941 django.server code 400, message Bad request version ('Jæ¨\x02©/µó\x1b\x16±Ë\x99ÁÂ2\x14|')
+ERROR 2025-10-22 19:57:43,943 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:44,152 django.server code 400, message Bad request version ('o¬\\×y\x03\\Õ¹ÑlÏä')
+ERROR 2025-10-22 19:57:44,152 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:44,152 django.server code 400, message Bad request version ('\x02h2\x08http/1.1\x00')
+ERROR 2025-10-22 19:57:44,168 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:44,168 django.server code 400, message Bad request version ('ÊÊ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06\x93úú\x00\x00\x00')
+ERROR 2025-10-22 19:57:44,168 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-22 19:57:44,168 django.server code 400, message Bad request version ('A?,\x1bÏSg·)#CÛ*¬çêqv')
+ERROR 2025-10-22 19:57:44,168 django.server You're accessing the development server over HTTPS, but it only supports HTTP.

@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grants Dashboard - FSSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-6 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-green-600 mb-4"> Grants Intelligence</h1>
+            <p class="text-gray-600">Managing donor partnerships and impact tracking</p>
+        </div>
+
+        <!-- Grant Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">{{ total_active_grants }}</div>
+                <p class="text-gray-600">Active Grants</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">{{ total_completed_grants }}</div>
+                <p class="text-gray-600">Completed Grants</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="text-3xl font-bold text-purple-600 mb-2">${{ total_grant_value|floatformat:0 }}</div>
+                <p class="text-gray-600">Total Active Funding</p>
+            </div>
+        </div>
+
+        <!-- Active Grants -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4"> Active Grants</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for grant in active_grants %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition">
+                    <h3 class="font-bold text-lg mb-2">{{ grant.name }}</h3>
+                    <p class="text-gray-600 text-sm mb-2">{{ grant.donor }}</p>
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="font-semibold">${{ grant.amount|floatformat:0 }}</span>
+                        <span class="text-blue-600">{{ grant.grant_type }}</span>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        {{ grant.start_date }} to {{ grant.end_date }}
+                    </div>
+                    <a href="{% url 'grant_detail' grant.id %}" class="block mt-3 bg-green-600 text-white text-center py-2 rounded hover:bg-green-700 transition">
+                        View Details
+                    </a>
+                </div>
+                {% empty %}
+                <div class="col-span-3 text-center text-gray-500 py-8">
+                    No active grants found
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Completed Grants -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4"> Completed Grants</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for grant in completed_grants %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition">
+                    <h3 class="font-bold text-lg mb-2">{{ grant.name }}</h3>
+                    <p class="text-gray-600 text-sm mb-2">{{ grant.donor }}</p>
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="font-semibold">${{ grant.amount|floatformat:0 }}</span>
+                        <span class="text-green-600">Completed</span>
+                    </div>
+                    <a href="{% url 'grant_detail' grant.id %}" class="block mt-3 bg-gray-600 text-white text-center py-2 rounded hover:bg-gray-700 transition">
+                        View Legacy
+                    </a>
+                </div>
+                {% empty %}
+                <div class="col-span-3 text-center text-gray-500 py-8">
+                    No completed grants yet
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="/" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition">
+                 Back to Main Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Export Hub - FSSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen py-8">
+    <div class="container mx-auto px-6 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-green-600 mb-4"> Data Management Hub</h1>
+            <p class="text-gray-600">Export templates and import data in bulk</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600">{{ total_models }}</div>
+                <p class="text-gray-600 text-sm">Available Models</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4 text-center">
+                <div class="text-2xl font-bold text-green-600">{{ export_formats|length }}</div>
+                <p class="text-gray-600 text-sm">Export Formats</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4 text-center">
+                <div class="text-2xl font-bold text-purple-600">2-Way</div>
+                <p class="text-gray-600 text-sm">Data Sync</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4 text-center">
+                <div class="text-2xl font-bold text-amber-600">Bulk</div>
+                <p class="text-gray-600 text-sm">Import Ready</p>
+            </div>
+        </div>
+
+        <!-- Models Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {% for model in models_info %}
+            <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                <div class="p-6">
+                    <!-- Model Header -->
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-800">{{ model.display_name }}</h3>
+                            <p class="text-gray-600 text-sm">{{ model.count }} records</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                            {{ model.last_export }}
+                        </span>
+                    </div>
+
+                    <!-- Model Description -->
+                    <p class="text-gray-600 text-sm mb-4">{{ model.description }}</p>
+
+                    <!-- Sample Fields -->
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 mb-2">Sample fields:</p>
+                        <div class="flex flex-wrap gap-1">
+                            {% for field in model.fields|slice:":4" %}
+                            <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">{{ field }}</span>
+                            {% endfor %}
+                            {% if model.fields|length > 4 %}
+                            <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">+{{ model.fields|length|add:"-4" }} more</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-2">
+                        <a href="/dashboard/export/{{ model.name }}/" 
+                           class="flex-1 bg-blue-600 text-white text-center py-2 px-3 rounded text-sm hover:bg-blue-700 transition">
+                            <i class="fas fa-download mr-1"></i>Export Data
+                        </a>
+                        <a href="/dashboard/export-template/{{ model.name }}/?format=csv" 
+                           class="flex-1 bg-green-600 text-white text-center py-2 px-3 rounded text-sm hover:bg-green-700 transition">
+                            <i class="fas fa-file-export mr-1"></i>Get Template
+                        </a>
+                    </div>
+
+                    <!-- Import Link -->
+                    <div class="mt-3 pt-3 border-t border-gray-200">
+                        <a href="/dashboard/import-data/{{ model.name }}/" 
+                           class="block w-full bg-gray-600 text-white text-center py-2 rounded text-sm hover:bg-gray-700 transition">
+                            <i class="fas fa-upload mr-1"></i>Import Data
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Instructions -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 class="font-bold text-blue-800 mb-3"> How to Use This System</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                    <h4 class="font-semibold text-blue-700 mb-2">1. Export Template</h4>
+                    <p class="text-blue-600">Download empty CSV templates for mass data entry in Excel or Google Sheets</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-blue-700 mb-2">2. Fill Data</h4>
+                    <p class="text-blue-600">Enter your data in the template following the provided field structure</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-blue-700 mb-2">3. Import Back</h4>
+                    <p class="text-blue-600">Upload the filled template to automatically add all records to the system</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="/" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition">
+                 Back to Main Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>
