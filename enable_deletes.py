@@ -1,4 +1,6 @@
-
+﻿# Enable delete in projects admin
+with open('projects/admin.py', 'w') as f:
+    f.write('''
 from django.contrib import admin
 from .models import Project
 
@@ -13,3 +15,6 @@ class ProjectAdmin(admin.ModelAdmin):
     def delete_queryset(self, request, queryset):
         for obj in queryset:
             obj.delete()
+''')
+
+print(' Enabled delete in projects admin')

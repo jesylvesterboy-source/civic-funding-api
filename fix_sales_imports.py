@@ -1,4 +1,6 @@
-
+﻿# Fix sales admin imports - only import what actually exists
+with open('sales/admin.py', 'w') as f:
+    f.write('''
 from django.contrib import admin
 from .models import Sale, Product, Purchase, Customer
 
@@ -9,7 +11,7 @@ class SaleAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'product_category', 'selling_price', 'current_stock']
+    list_display = ['name', 'price']
     actions = ['delete_selected']
 
 @admin.register(Purchase)
@@ -21,17 +23,6 @@ class CustomerAdmin(admin.ModelAdmin):
     actions = ['delete_selected']
 
 # Only register models that actually exist
+''')
 
-from .models import ProductCategory, SaleItem, PurchaseItem
-
-@admin.register(ProductCategory)
-class ProductCategoryAdmin(admin.ModelAdmin):
-    actions = ['delete_selected']
-
-@admin.register(SaleItem)
-class SaleItemAdmin(admin.ModelAdmin):
-    actions = ['delete_selected']
-
-@admin.register(PurchaseItem)
-class PurchaseItemAdmin(admin.ModelAdmin):
-    actions = ['delete_selected']
+print(' Fixed sales admin imports')

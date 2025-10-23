@@ -1,4 +1,6 @@
-
+﻿# Enable delete in farmers admin
+with open('farmers/admin.py', 'w') as f:
+    f.write('''
 from django.contrib import admin
 from .models import Farmer, Household
 
@@ -11,3 +13,6 @@ class FarmerAdmin(admin.ModelAdmin):
 @admin.register(Household)  
 class HouseholdAdmin(admin.ModelAdmin):
     actions = ['delete_selected']
+''')
+
+print(' Enabled delete in farmers admin')
