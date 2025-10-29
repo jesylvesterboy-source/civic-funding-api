@@ -36,6 +36,10 @@ INSTALLED_APPS = [
     'staff_performance',
     'farmer_engagement',
     'video_calls',
+    
+    # @INSERT - Django Compressor for production optimization
+    'compressor',
+    'crispy_forms',  # @ADD - Professional form rendering
       'dashboard',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -256,3 +260,16 @@ LOGIN_URL = '/accounts/login/'
 
 
 
+
+# @INSERT - Configure static files finders for compressor
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
+# @INSERT - Compression settings for production
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+# @INSERT - Crispy Forms for professional form rendering
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
