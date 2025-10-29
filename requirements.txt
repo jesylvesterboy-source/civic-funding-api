@@ -35,3 +35,4 @@ django-debug-toolbar==4.4.6
 python-dateutil==2.9.0.post0
 pytz==2024.2
 python-dotenv==1.0.1
+django-compressor==4.5.0
