@@ -1,4 +1,4 @@
-﻿"""
+"""
 Django settings for gates_tracker project  PRODUCTION CONFIGURATION
 Author: Jeremiah Williams Sylvester
 """
@@ -33,6 +33,9 @@ AUTH_USER_MODEL = 'users.User'
 INSTALLED_APPS = [
     'users',
     'core',
+    'staff_performance',
+    'farmer_engagement',
+    'video_calls',
       'dashboard',
     'django.contrib.admin',
     'django.contrib.auth',

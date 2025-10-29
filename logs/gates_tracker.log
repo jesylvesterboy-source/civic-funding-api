@@ -393,3 +393,4 @@ INFO 2025-10-23 15:36:41,472 django.server code 400, message Bad request version
 ERROR 2025-10-23 15:36:41,472 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
 INFO 2025-10-23 15:36:41,475 django.server code 400, message Bad request version ('p6òl\x87¸U°4Ý£¹')
 ERROR 2025-10-23 15:36:41,476 django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2025-10-29 15:53:06,942 django.utils.autoreload Watching for file changes with StatReloader

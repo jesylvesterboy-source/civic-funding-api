@@ -1,1 +1,27 @@
-﻿web: gunicorn gates_tracker.wsgi:application --bind 0.0.0.0:$PORT
+# render.yaml
+services:
+  - type: web
+    name: fsss-platform
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+      python manage.py migrate
+    startCommand: gunicorn gates_tracker.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fsss-database
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+    healthCheckPath: /health/
+
+databases:
+  - name: fsss-database
+    plan: free
+    databaseName: fsss
+    user: fsss_user
