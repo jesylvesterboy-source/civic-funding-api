@@ -24,6 +24,5 @@ qrcode==8.2
 celery==5.4.0
 redis==5.0.7
 
-# Development (safe for production)
-django-debug-toolbar==4.4.7
-django-extensions==3.2.3
+# Production only - remove development packages
+# django-debug-toolbar and django-extensions removed for production
