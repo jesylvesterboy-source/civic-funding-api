@@ -1,8 +1,8 @@
-﻿#  ENTERPRISE DJANGO STACK (Django 4.2 LTS Compatible)
+#  ENTERPRISE DJANGO STACK (Django 4.2 LTS Compatible)
 Django==4.2.18
 gunicorn==23.0.0
 whitenoise==6.11.0
-psycopg2-binary==2.9.9
+psycopg[binary]==3.2.0
 dj-database-url==2.1.0
 python-decouple==3.8
 
