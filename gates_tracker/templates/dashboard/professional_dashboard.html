@@ -269,6 +269,7 @@
             border-radius: 0.25rem 0.25rem 0 0;
             position: relative;
             transition: all 0.3s;
+            min-height: 20px;
         }
 
         .chart-bar:hover {
@@ -316,7 +317,6 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: var(--accent);
         }
 
         .distribution-name {
@@ -562,7 +562,7 @@
                     <div class="performance-chart">
                         <div class="chart-grid">
                             {% for value in dashboard_data.performance_trend %}
-                            <div class="chart-bar" style="height: {{ value }}%;">
+                            <div class="chart-bar" style="height: {{ value }}%;" title="{{ value }}%">
                                 <div class="chart-label">{{ value }}%</div>
                             </div>
                             {% endfor %}
@@ -579,7 +579,7 @@
                         {% for key, value in dashboard_data.engagement_distribution.items %}
                         <div class="distribution-item">
                             <div class="distribution-info">
-                                <div class="distribution-badge" style="background: hsl({{ forloop.counter0|add:1|mul:60 }}, 70%, 50%);"></div>
+                                <div class="distribution-badge" style="background: hsl({{ forloop.counter0|add:'60' }}, 70%, 50%);"></div>
                                 <div class="distribution-name">{{ key }}</div>
                             </div>
                             <div class="distribution-value">{{ value }}</div>
