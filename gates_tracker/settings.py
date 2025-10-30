@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'staff_performance',
     'farmer_engagement',
     'video_calls',
+    'gates_tracker',
     
     # @INSERT - Django Compressor for production optimization
     'compressor',
@@ -273,3 +274,4 @@ COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 # @INSERT - Crispy Forms for professional form rendering
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
