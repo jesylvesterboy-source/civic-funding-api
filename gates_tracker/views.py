@@ -53,10 +53,14 @@ def get_real_enterprise_data():
             data['performance_trend'] = [random.randint(75, 95) for _ in range(7)]
 
             # Recent activities from all modules
+            active_staff_str = str(data['active_staff'])
+            farmers_engaged_str = str(data['farmers_engaged']) 
+            video_calls_str = str(data['video_calls_today'])
+            
             data['recent_activities'] = [
-                {'module': 'Staff Performance', 'action': f'{data["active_staff"]} active staff members', 'time': 'Live'},
-                {'module': 'Farmer Engagement', 'action': f'{data["farmers_engaged"]} farmers engaged', 'time': 'Live'},
-                {'module': 'Video Calls', 'action': f'{data["video_calls_today"]} calls today', 'time': 'Live'},
+                {'module': 'Staff Performance', 'action': f'{active_staff_str} active staff members', 'time': 'Live'},
+                {'module': 'Farmer Engagement', 'action': f'{farmers_engaged_str} farmers engaged', 'time': 'Live'},
+                {'module': 'Video Calls', 'action': f'{video_calls_str} calls today', 'time': 'Live'},
             ]
 
         except Exception as e:
@@ -88,12 +92,16 @@ def get_simulated_enterprise_data():
         ]
     }
 
-# MISSING VIEW FUNCTIONS THAT URLS.PY EXPECTS
+# ALL VIEW FUNCTIONS
 
 def professional_dashboard(request):
     'Main professional dashboard view'
     data = get_real_enterprise_data()
     return render(request, 'dashboard/professional_dashboard.html', {'dashboard_data': data})
+
+def fss_tracker_dashboard(request):
+    'FSS Tracker Dashboard - alias for professional_dashboard'
+    return professional_dashboard(request)
 
 def system_health_check(request):
     'System health check endpoint'
@@ -135,17 +143,12 @@ def video_calls_dashboard(request):
         'recent_activities': [activity for activity in data['recent_activities'] if activity['module'] == 'Video Calls']
     }
     return render(request, 'dashboard/video_calls.html', {'video_data': video_data})
-def fss_tracker_dashboard(request):
-    'FSS Tracker Dashboard - compatibility function for deployed version'
-    return professional_dashboard(request)
-
-
-from django.http import JsonResponse
-from django.db import connection
-import sys
 
 def deployment_health_check(request):
-    \"\"\"Comprehensive health check for deployment troubleshooting\"\"\"
+    '''Comprehensive health check for deployment troubleshooting'''
+    from django.db import connection
+    import sys
+
     health_status = {
         'status': 'checking',
         'database': 'unknown',
@@ -157,7 +160,7 @@ def deployment_health_check(request):
     try:
         # Test database connection
         with connection.cursor() as cursor:
-            cursor.execute(\"SELECT 1\")
+            cursor.execute('SELECT 1')
         health_status['database'] = 'connected'
     except Exception as e:
         health_status['database'] = f'error: {str(e)}'
