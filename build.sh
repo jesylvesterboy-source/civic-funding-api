@@ -1,26 +1,16 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo "Installing system dependencies for Pillow..."
-apt-get update
-apt-get install -y \
-    libjpeg-dev \
-    zlib1g-dev \
-    libfreetype6-dev \
-    liblcms2-dev \
-    libtiff5-dev \
-    libwebp-dev \
-    libharfbuzz-dev \
-    libfribidi-dev \
-    libopenjp2-7-dev
+echo "=== PROFESSIONAL ENTERPRISE DEPLOYMENT ==="
 
-echo "Installing Python dependencies..."
+echo "1. Installing Python dependencies..."
+pip install --upgrade pip
 pip install -r requirements.txt
 
-echo "Running database migrations..."
+echo "2. Running database migrations..."
 python manage.py migrate
 
-echo "Collecting static files..."
+echo "3. Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
-echo "Build completed successfully!"
+echo " PROFESSIONAL DEPLOYMENT COMPLETED SUCCESSFULLY"
