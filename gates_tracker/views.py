@@ -140,3 +140,51 @@ def fss_tracker_dashboard(request):
     return professional_dashboard(request)
 
 
+from django.http import JsonResponse
+from django.db import connection
+import sys
+
+def deployment_health_check(request):
+    \"\"\"Comprehensive health check for deployment troubleshooting\"\"\"
+    health_status = {
+        'status': 'checking',
+        'database': 'unknown',
+        'migrations': 'unknown',
+        'imports': 'unknown',
+        'version': sys.version
+    }
+    
+    try:
+        # Test database connection
+        with connection.cursor() as cursor:
+            cursor.execute(\"SELECT 1\")
+        health_status['database'] = 'connected'
+    except Exception as e:
+        health_status['database'] = f'error: {str(e)}'
+    
+    try:
+        # Test migrations
+        from django.core.management import call_command
+        call_command('check', '--deploy')
+        health_status['migrations'] = 'applied'
+    except Exception as e:
+        health_status['migrations'] = f'error: {str(e)}'
+    
+    try:
+        # Test critical imports
+        from gates_tracker.models import Department, EnterpriseUserProfile
+        health_status['imports'] = 'successful'
+    except Exception as e:
+        health_status['imports'] = f'error: {str(e)}'
+    
+    # Overall status
+    if all(status in ['connected', 'applied', 'successful'] for status in [
+        health_status['database'], 
+        health_status['migrations'], 
+        health_status['imports']
+    ]):
+        health_status['status'] = 'healthy'
+    else:
+        health_status['status'] = 'unhealthy'
+    
+    return JsonResponse(health_status)
