@@ -138,3 +138,5 @@ def video_calls_dashboard(request):
 def fss_tracker_dashboard(request):
     'FSS Tracker Dashboard - compatibility function for deployed version'
     return professional_dashboard(request)
+
+
