@@ -1,16 +1,26 @@
-# build.sh
 #!/usr/bin/env bash
-# Exit on error
 set -o errexit
 
-# Install dependencies
+echo "Installing system dependencies for Pillow..."
+apt-get update
+apt-get install -y \
+    libjpeg-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libtiff5-dev \
+    libwebp-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libopenjp2-7-dev
+
+echo "Installing Python dependencies..."
 pip install -r requirements.txt
 
-# Collect static files
-python manage.py collectstatic --no-input
-
-# Run database migrations
+echo "Running database migrations..."
 python manage.py migrate
 
-# Create superuser if not exists (for first deployment)
-echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@fsss.com', 'admin123')" | python manage.py shell
+echo "Collecting static files..."
+python manage.py collectstatic --noinput --clear
+
+echo "Build completed successfully!"
