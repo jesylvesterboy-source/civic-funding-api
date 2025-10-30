@@ -135,3 +135,6 @@ def video_calls_dashboard(request):
         'recent_activities': [activity for activity in data['recent_activities'] if activity['module'] == 'Video Calls']
     }
     return render(request, 'dashboard/video_calls.html', {'video_data': video_data})
+def fss_tracker_dashboard(request):
+    'FSS Tracker Dashboard - compatibility function for deployed version'
+    return professional_dashboard(request)
