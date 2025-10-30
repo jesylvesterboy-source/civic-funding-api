@@ -9,7 +9,8 @@ urlpatterns = [
     path('sales/', include('sales.urls')),
     path('reports/', include('reports.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # ADD THIS LINE
-    path('', fss_tracker_dashboard, name='fsss_dashboard'),
+    path('', root_view, name='home'),
+    path('fsss-dashboard/', fss_tracker_dashboard, name='fsss_dashboard_alt'),
     path('fsss-dashboard/', fss_tracker_dashboard, name='fsss_dashboard_alt'),
     path('health-check/', system_health_check, name='system_health_check'),
 ]

@@ -17,3 +17,12 @@ def system_health_check(request):
         return HttpResponse("OK", status=200)
     except Exception as e:
         return HttpResponse(f"Database error: {e}", status=500)
+from django.http import JsonResponse
+
+def root_view(request):
+    return JsonResponse({
+        \"message\": \"Civic Funding API Enterprise Stack\", 
+        \"status\": \"Operational\",
+        \"modules\": [\"Staff Performance\", \"Farmer Engagement\", \"Video Calls\"],
+        \"version\": \"1.0.0\"
+    })
