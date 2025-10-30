@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Funding Enterprise Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-effect text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-hand-holding-usd text-2xl"></i>
+                <h1 class="text-2xl font-bold">CivicFunding Pro</h1>
+            </div>
+            <div class="space-x-4">
+                <a href="/admin/" class="hover:text-blue-200">Admin</a>
+                <a href="/health-check/" class="hover:text-blue-200">System Health</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="text-white py-20">
+        <div class="container mx-auto text-center">
+            <h2 class="text-5xl font-bold mb-4">Civic Funding Enterprise Platform</h2>
+            <p class="text-xl mb-8 opacity-90">Advanced funding management with real-time analytics and engagement tools</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="glass-effect rounded-lg p-6 module-card">
+                    <i class="fas fa-chart-line text-3xl mb-4 text-green-400"></i>
+                    <h3 class="text-xl font-semibold mb-2">Staff Performance</h3>
+                    <p class="opacity-80">Track and optimize team productivity with real-time metrics</p>
+                </div>
+                <div class="glass-effect rounded-lg p-6 module-card">
+                    <i class="fas fa-tractor text-3xl mb-4 text-yellow-400"></i>
+                    <h3 class="text-xl font-semibold mb-2">Farmer Engagement</h3>
+                    <p class="opacity-80">Connect with agricultural communities and monitor participation</p>
+                </div>
+                <div class="glass-effect rounded-lg p-6 module-card">
+                    <i class="fas fa-video text-3xl mb-4 text-purple-400"></i>
+                    <h3 class="text-xl font-semibold mb-2">Video Calls</h3>
+                    <p class="opacity-80">Seamless communication with integrated video conferencing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real-time Dashboard -->
+    <section class="py-12">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-white text-center mb-8">Real-time System Dashboard</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+                <!-- Stats Cards -->
+                <div class="glass-effect rounded-lg p-6 text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm opacity-80">Active Staff</p>
+                            <p class="text-2xl font-bold" id="activeStaff">24</p>
+                        </div>
+                        <i class="fas fa-users text-blue-400 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-lg p-6 text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm opacity-80">Farmers Engaged</p>
+                            <p class="text-2xl font-bold" id="farmersEngaged">156</p>
+                        </div>
+                        <i class="fas fa-seedling text-green-400 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-lg p-6 text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm opacity-80">Video Calls Today</p>
+                            <p class="text-2xl font-bold" id="videoCalls">12</p>
+                        </div>
+                        <i class="fas fa-video text-purple-400 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-lg p-6 text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm opacity-80">Success Rate</p>
+                            <p class="text-2xl font-bold" id="successRate">94%</p>
+                        </div>
+                        <i class="fas fa-trophy text-yellow-400 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
+                <div class="glass-effect rounded-lg p-6">
+                    <canvas id="performanceChart" class="w-full h-64"></canvas>
+                </div>
+                <div class="glass-effect rounded-lg p-6">
+                    <canvas id="engagementChart" class="w-full h-64"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass-effect text-white py-8 mt-12">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 CivicFunding Pro Enterprise. All rights reserved.</p>
+            <p class="opacity-80 mt-2">Built with Django  Deployed on Render  Enterprise Ready</p>
+        </div>
+    </footer>
+
+    <script>
+        // Real-time data simulation
+        function updateStats() {
+            document.getElementById('activeStaff').textContent = Math.floor(20 + Math.random() * 10);
+            document.getElementById('farmersEngaged').textContent = Math.floor(150 + Math.random() * 20);
+            document.getElementById('videoCalls').textContent = Math.floor(10 + Math.random() * 8);
+            document.getElementById('successRate').textContent = (92 + Math.random() * 6).toFixed(0) + '%';
+        }
+
+        // Initialize charts
+        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+        const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+
+        new Chart(performanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Staff Performance',
+                    data: [65, 78, 82, 79, 85, 88, 92],
+                    borderColor: '#3B82F6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: { color: 'white' }
+                    },
+                    x: {
+                        ticks: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        new Chart(engagementCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Farmers', 'Staff', 'Partners', 'Communities'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // Update stats every 5 seconds
+        setInterval(updateStats, 5000);
+        updateStats(); // Initial call
+    </script>
+</body>
+</html>
