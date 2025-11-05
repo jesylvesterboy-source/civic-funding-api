@@ -1,16 +1,20 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -o errexit
 
 echo "=== PROFESSIONAL ENTERPRISE DEPLOYMENT ==="
 
-echo "1. Installing Python dependencies..."
+echo "1. Installing system dependencies..."
+apt-get update
+apt-get install -y libpq-dev gcc python3-dev
+
+echo "2. Installing Python dependencies..."
 pip install --upgrade pip
 pip install -r requirements.txt
 
-echo "2. Running database migrations..."
+echo "3. Running database migrations..."
 python manage.py migrate
 
-echo "3. Collecting static files..."
+echo "4. Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
 echo " PROFESSIONAL DEPLOYMENT COMPLETED SUCCESSFULLY"
