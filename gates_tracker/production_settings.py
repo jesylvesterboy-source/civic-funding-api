@@ -8,32 +8,30 @@ from .settings import *
 DEBUG = False
 ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
-# Database configuration for Render - using pg8000 adapter
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': os.environ.get('DATABASE_PORT', '5432'),
-    }
-}
-
-# Alternative: Use dj_database_url with pg8000
-# Parse DATABASE_URL and manually set the engine
-import urllib.parse
+# Database configuration for Render - using explicit PostgreSQL configuration
 if 'DATABASE_URL' in os.environ:
+    # Parse DATABASE_URL manually and configure for PostgreSQL
+    import urllib.parse
     db_url = os.environ['DATABASE_URL']
     parsed = urllib.parse.urlparse(db_url)
     
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': parsed.path[1:],
-        'USER': parsed.username,
-        'PASSWORD': parsed.password,
-        'HOST': parsed.hostname,
-        'PORT': parsed.port or '5432',
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': parsed.path[1:],  # Remove leading slash
+            'USER': parsed.username,
+            'PASSWORD': parsed.password,
+            'HOST': parsed.hostname,
+            'PORT': parsed.port or '5432',
+        }
+    }
+else:
+    # Fallback to SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 
 # Static files configuration for Render
