@@ -5,12 +5,14 @@ from datetime import datetime, timedelta
 import random
 
 # Import your actual enterprise models
+HAS_ENTERPRISE_MODELS = False
 try:
     from staff_performance.models import StaffMember, PerformanceMetric
-    from farmer_engagement.models import CBOGroup, FarmerAttendance
+    from farmer_engagement.models import CBOGroup, FarmerAttendance  
     from video_calls.models import VideoCallSession
     HAS_ENTERPRISE_MODELS = True
-except ImportError:
+except (ImportError, RuntimeError):
+    # Handle case where apps are not properly configured
     HAS_ENTERPRISE_MODELS = False
 
 def get_real_enterprise_data():
@@ -191,3 +193,4 @@ def deployment_health_check(request):
         health_status['status'] = 'unhealthy'
     
     return JsonResponse(health_status)
+

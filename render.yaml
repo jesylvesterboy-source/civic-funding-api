@@ -1,27 +1,16 @@
-# render.yaml
 services:
   - type: web
-    name: fsss-platform
+    name: gates-tracker-backend
     env: python
-    plan: free
-    buildCommand: |
-      pip install -r requirements.txt
-      python manage.py collectstatic --noinput
-      python manage.py migrate
-    startCommand: gunicorn gates_tracker.wsgi:application
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn gates_tracker.wsgi:application"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: fsss-database
+          name: gates_tracker_db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
         value: 4
-    healthCheckPath: /health/
-
-databases:
-  - name: fsss-database
-    plan: free
-    databaseName: fsss
-    user: fsss_user
+    healthCheckPath: /health-check/
