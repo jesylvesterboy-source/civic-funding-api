@@ -3,9 +3,8 @@ set -o errexit
 
 echo "=== PROFESSIONAL ENTERPRISE DEPLOYMENT ==="
 
-echo "1. Installing Python dependencies with build isolation..."
+echo "1. Installing Python dependencies..."
 pip install --upgrade pip
-pip install --no-binary psycopg2 psycopg2==2.9.9
 pip install -r requirements.txt
 
 echo "2. Running database migrations..."
