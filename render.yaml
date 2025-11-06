@@ -1,7 +1,9 @@
-services:
+﻿services:
   - type: web
     name: gates-tracker-backend
     env: python
+    plan: free
+    region: ohio
     buildCommand: "./build.sh"
     startCommand: "gunicorn gates_tracker.wsgi:application"
     envVars:
