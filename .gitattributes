@@ -1,0 +1,5 @@
+﻿# Auto detect text files and perform LF normalization
+* text=auto
+
+# Ensure runtime.txt always uses LF line endings
+runtime.txt text eol=lf
